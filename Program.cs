@@ -2,7 +2,6 @@
 {
     internal class Program
     {
-        const int MIN_NUMBER = 0;
         const int MAX_NUMBER = 10;
         static void Main(string[] args)
         {
@@ -28,14 +27,14 @@
                 int[,] slotMachine = new int[3, 3];
 
                 //checks the length of each dimension of the array
-                int row = slotMachine.GetLength(0);
-                int col = slotMachine.GetLength(1);
+                int rows = slotMachine.GetLength(0);
+                int cols = slotMachine.GetLength(1);
 
                 if (input == '1')
                 {
-                    for (int j = 0; j < col; j++)
+                    for (int j = 0; j < cols; j++)
                     {
-                        index = rnd.Next(MIN_NUMBER, MAX_NUMBER);
+                        index = rnd.Next(MAX_NUMBER);
                         slotMachine[0, j] = index;
                         Console.Write(slotMachine[0, j] + " ");
                     }
@@ -44,17 +43,24 @@
 
                 if (input == '2')
                 {
-                    
+                    for (int j = 0; j < cols; j++)
+                    {
+                        index = rnd.Next(MAX_NUMBER);
+                        slotMachine[0, j] = index;
+                        Console.Write(slotMachine[0, j] + " ");
+                        Console.Write(slotMachine[1, j] + " ");
+                    }
+                    Console.WriteLine("\n");
                 }
 
                 if (input == '3')
                 {
                     //loops through each element in the array and sets the values randomly
-                    for (int i = 0; i < row; i++)
+                    for (int i = 0; i < rows; i++)
                     {
-                        for (int j = 0; j < col; j++)
+                        for (int j = 0; j < cols; j++)
                         {
-                            index = rnd.Next(MIN_NUMBER, MAX_NUMBER);
+                            index = rnd.Next(MAX_NUMBER);
                             slotMachine[i, j] = index;
                             Console.Write(slotMachine[i, j] + " ");
                         }
