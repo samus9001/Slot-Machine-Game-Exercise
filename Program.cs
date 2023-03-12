@@ -64,6 +64,12 @@ namespace SlotMachine
                     continue;
                 }
 
+                if (input == 'L')
+                {
+                    Console.WriteLine($"Goodbye, thanks for playing. Your final balance is {balance}!");
+                    return;
+                }
+
                 if (input == '1')
                 {
                     //loops through each element in the first row of the array and sets the values
@@ -182,11 +188,6 @@ namespace SlotMachine
                     Console.WriteLine($"\nYOU HIT THE JACKPOT!!! YOU WIN ${LARGE_WIN}\n\n");
                     balance += LARGE_WIN;
                     largeWin = true;
-                }
-
-                if (input == 'L')
-                {
-                    return;
                 }
 
                 if (balance <= 0)
