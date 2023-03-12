@@ -6,19 +6,20 @@ namespace SlotMachine
 {
     internal class Program
     {
-        const int MAX_NUMBER = 10;
-        const int MAX_LOSS = 5;
+        const int MAX_NUMBER = 10; //sets the upper bound of the array
+        const int MAX_LOSS = 5; //largest amount of balance that is lost
         const int SMALL_WIN = 100;
         const int MEDIUM_WIN = 500;
         const int LARGE_WIN = 1000;
-        const int startingBalance = 100;
+        const int STARTING_BALANCE = 100;
+        const int LOW_BALANCE = 5; //sets the limit on spins depending on balance
 
         static void Main(string[] args)
         {
             //state variables
             var rnd = new Random();
             int index;
-            int balance = startingBalance;
+            int balance = STARTING_BALANCE;
             bool endGame = false;
             bool largeWin = false;
             char restartGame = 'N';
@@ -37,12 +38,11 @@ namespace SlotMachine
             {
                 Console.WriteLine($"BALANCE = ${balance}\n\n");
 
-                if (balance >= 5)
+                if (balance >= LOW_BALANCE)
                 {
                     Console.WriteLine("Enter $1 to play one line or $3 to play all three lines!\n\nPress L to leave with your balance\n");
                 }
-
-                if (balance < 5)
+                else
                 {
                     Console.WriteLine("Enter $1 to play one line!\n\nPress L to leave with your balance\n");
                 }
@@ -58,7 +58,7 @@ namespace SlotMachine
                     continue;
                 }
 
-                if (balance < 5 && input != '1' && input != 'L')
+                if (balance < LOW_BALANCE && input != '1' && input != 'L')
                 {
                     Console.WriteLine("That is not a valid option\n");
                     continue;
@@ -203,7 +203,7 @@ namespace SlotMachine
 
                 if (restartGame == 'Y')
                 {
-                    balance = startingBalance;
+                    balance = STARTING_BALANCE;
                     Console.Clear();
                     endGame = false;
                     restartGame = 'N';
