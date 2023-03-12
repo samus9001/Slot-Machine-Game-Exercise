@@ -11,12 +11,13 @@ namespace SlotMachine
         const int SMALL_WIN = 100;
         const int MEDIUM_WIN = 500;
         const int LARGE_WIN = 1000;
+        const int startingBalance = 100;
+
         static void Main(string[] args)
         {
             //state variables
             var rnd = new Random();
             int index;
-            int startingBalance = 100;
             int balance = startingBalance;
             bool endGame = false;
             bool largeWin = false;
