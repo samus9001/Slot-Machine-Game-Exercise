@@ -20,9 +20,7 @@ namespace SlotMachine
             var rnd = new Random();
             int index;
             int balance = STARTING_BALANCE;
-            bool endGame = false;
             bool largeWin = false;
-            char restartGame = 'N';
             char input;
 
             //creates a 3x3 array
@@ -190,26 +188,22 @@ namespace SlotMachine
                     largeWin = true;
                 }
 
+                bool restart = false;
+
                 if (balance <= 0)
                 {
                     Console.WriteLine("\nYOU LOSE! BETTER LUCK NEXT TIME\n");
                     Console.WriteLine("If you would like to play again press Y or press any other key to exit");
-                    endGame = true;
+                    var key = Console.ReadKey().KeyChar;
+                    restart = Char.ToUpper(key) == 'Y';
                 }
 
-                if (endGame)
-                {
-                    restartGame = Char.ToUpper(Console.ReadKey().KeyChar);
-                }
-
-                if (restartGame == 'Y')
+                if (restart)
                 {
                     balance = STARTING_BALANCE;
                     Console.Clear();
-                    endGame = false;
-                    restartGame = 'N';
                 }
-                else if (endGame)
+                else if (balance <= 0)
                 {
                     return;
                 }
