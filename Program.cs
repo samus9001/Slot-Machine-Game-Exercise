@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.Threading;
 
@@ -8,7 +9,7 @@ namespace SlotMachine
     {
         const int MAX_NUMBER = 10; //sets the upper bound of the array
         const int MAX_LOSS = 5; //largest amount of balance that is lost
-        const int SMALL_WIN = 100;
+        const int SMALL_WIN = 50;
         const int MEDIUM_WIN = 500;
         const int LARGE_WIN = 1000;
         const int STARTING_BALANCE = 100;
@@ -37,33 +38,29 @@ namespace SlotMachine
 
                 if (balance >= LOW_BALANCE)
                 {
-                    Console.WriteLine("Enter $1 to play one line or $3 to play all three lines!\n\nPress L to leave with your balance\n");
+                    Console.WriteLine("PRESS '1' FOR ONE SPIN OR '3' FOR THREE SPINS\n\n");
                 }
                 else
                 {
-                    Console.WriteLine("Enter $1 to play one line!\n\nPress L to leave with your balance\n");
+                    Console.WriteLine("PRESS '1' FOR ONE SPIN\n\n");
                 }
 
-                Console.Write("$");
+                Console.WriteLine("ONE SPIN COSTS $1\nTHREE SPINS COSTS $5\n");
+                Console.WriteLine("PRESS 'L' TO LEAVE WITH YOUR BALANCE");
+
                 input = Char.ToUpper(Console.ReadKey().KeyChar);
                 Console.Clear();
 
                 //checks if input is out of bounds
-                if (input != '1' && input != '3' && input != 'L')
+                if (input != '1' && input != '3' && input != 'L' || balance < LOW_BALANCE && input != '1' && input != 'L')
                 {
-                    Console.WriteLine("That is not a valid option\n");
-                    continue;
-                }
-
-                if (balance < LOW_BALANCE && input != '1' && input != 'L')
-                {
-                    Console.WriteLine("That is not a valid option\n");
+                    Console.WriteLine("THAT IS NOT A VALID OPTION\n");
                     continue;
                 }
 
                 if (input == 'L')
                 {
-                    Console.WriteLine($"Goodbye, thanks for playing. Your final balance is ${balance}!");
+                    Console.WriteLine($"THANKS FOR PLAYING! YOUR FINAL BALANCE IS ${balance}!");
                     return;
                 }
 
@@ -94,59 +91,68 @@ namespace SlotMachine
                     balance--;
                     Console.WriteLine("\n");
                 }
+
+                //checks if the elements are matching for one spin
+                if (input == '1' && slotMachine[0, 0] == slotMachine[0, 1] && slotMachine[0, 1] == slotMachine[0, 2])
+                {
+                    Console.WriteLine($"\nYOU HIT A MATCH! YOU WIN ${SMALL_WIN}\n\n");
+                    balance += SMALL_WIN;
+                }
+
                 if (input == '3')
                 {
                     SlotMachineInput(slotMachine, rows, cols, rnd);
                     balance = balance - MAX_LOSS;
                 }
 
-                //checks for matching rows
+                //checks for matching rows with three spins
                 int matchingRows = 0;
-                for (int i = 0; i < rows; i++)
+                if (input != '1') //skips match conditions if one spin is played
                 {
-
-                    if (slotMachine[i, 0] == slotMachine[i, 1] && slotMachine[i, 1] == slotMachine[i, 2])
+                    for (int i = 0; i < rows; i++)
                     {
-                        Console.WriteLine($"\nYOU HIT A MATCH ON ROW {i + 1}! YOU WIN ${SMALL_WIN}!\n\n");
-                        balance += SMALL_WIN;
-                        matchingRows++;
+
+                        if (slotMachine[i, 0] == slotMachine[i, 1] && slotMachine[i, 1] == slotMachine[i, 2])
+                        {
+                            Console.WriteLine($"\nYOU HIT A MATCH ON ROW {i + 1}! YOU WIN ${SMALL_WIN}!\n\n");
+                            balance += SMALL_WIN;
+                            matchingRows++;
+                        }
                     }
                 }
 
-                //checks for matching columns
+                //checks for matching columns with three spins
                 int matchingColumns = 0;
-                for (int j = 0; j < cols; j++)
+                if (input != '1')
                 {
-                    if (slotMachine[0, j] == slotMachine[1, j] && slotMachine[1, j] == slotMachine[2, j])
+                    for (int j = 0; j < cols; j++)
                     {
-                        Console.WriteLine($"\nYOU HIT A MATCH ON COLUMN {j + 1}! YOU WIN ${SMALL_WIN}!\n\n");
-                        balance += SMALL_WIN;
-                        matchingColumns++;
+                        if (slotMachine[0, j] == slotMachine[1, j] && slotMachine[1, j] == slotMachine[2, j])
+                        {
+                            Console.WriteLine($"\nYOU HIT A MATCH ON COLUMN {j + 1}! YOU WIN ${SMALL_WIN}!\n\n");
+                            balance += SMALL_WIN;
+                            matchingColumns++;
+                        }
                     }
                 }
 
-                //checks if the elements in the left diagonal are matching
-                if (input == '3' && slotMachine[0, 0] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[2, 2])
-                {
-                    Console.WriteLine($"\nYOU HIT A MATCH ON THE DIAGONAL! YOU WIN ${SMALL_WIN}!\n\n");
-                    balance += SMALL_WIN;
-                }
-                //checks if the elements in the right diagonal are matching
-                if (input == '3' && slotMachine[0, 2] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[2, 0])
+                //checks if the elements in the diagonals are matching with three spins
+                if (input != '1' && input == '3' && slotMachine[0, 0] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[2, 2] || input != '1' && input == '3' && slotMachine[0, 2] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[2, 0])
                 {
                     Console.WriteLine($"\nYOU HIT A MATCH ON THE DIAGONAL! YOU WIN ${SMALL_WIN}!\n\n");
                     balance += SMALL_WIN;
                 }
 
-                //checks for both matching rows and columns for a jackpot
+                //checks both matching rows and columns for a jackpot
                 if (matchingRows == rows && matchingColumns == cols)
                 {
                     Console.WriteLine($"\nJACKPOT!!! YOU WIN ${LARGE_WIN}!\n\n");
                     balance += LARGE_WIN;
                 }
+                //checks for matching rows or matching columns
                 else if (matchingRows == rows || matchingColumns == cols)
                 {
-                    Console.WriteLine($"\nYOU HIT A BIG WIN! YOU WIN ${MEDIUM_WIN}!\n\n");
+                    Console.WriteLine($"\nYOU HIT A BIG WIN!! YOU WIN ${MEDIUM_WIN}!\n\n");
                     balance += MEDIUM_WIN;
                 }
 
@@ -155,7 +161,7 @@ namespace SlotMachine
                 if (balance <= 0)
                 {
                     Console.WriteLine("\nYOU LOSE! BETTER LUCK NEXT TIME\n");
-                    Console.WriteLine("If you would like to play again press Y or press any other key to exit");
+                    Console.WriteLine("IF YOU WOULD LIKE TO PLAY AGAIN PRESS 'Y' OR PRESS ANY OTHER KEY TO EXIT");
                     var key = Console.ReadKey().KeyChar;
                     restart = Char.ToUpper(key) == 'Y';
                 }
