@@ -20,7 +20,6 @@ namespace SlotMachine
             var rnd = new Random();
             int index;
             int balance = STARTING_BALANCE;
-            bool largeWin = false;
             char input;
 
             //creates a 3x3 array
@@ -64,7 +63,7 @@ namespace SlotMachine
 
                 if (input == 'L')
                 {
-                    Console.WriteLine($"Goodbye, thanks for playing. Your final balance is {balance}!");
+                    Console.WriteLine($"Goodbye, thanks for playing. Your final balance is ${balance}!");
                     return;
                 }
 
@@ -101,100 +100,54 @@ namespace SlotMachine
                     balance = balance - MAX_LOSS;
                 }
 
-                //checks if the elements in the first row are matching
-                if (largeWin == false && slotMachine[0, 0] == slotMachine[0, 1] && slotMachine[0, 1] == slotMachine[0, 2])
-                {
-                    Console.WriteLine($"\nYOU HIT A MATCH ON THE FIRST ROW! YOU WIN ${SMALL_WIN}\n\n");
-                    balance += SMALL_WIN;
-                }
-                //checks if the elements in the second row are matching
-                if (input == '3' && largeWin == false && slotMachine[1, 0] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[1, 2])
-                {
-                    Console.WriteLine($"\nYOU HIT A MATCH ON THE SECOND ROW! YOU WIN ${SMALL_WIN}\n\n");
-                    balance += SMALL_WIN;
-                }
-                //checks if the elements in the third row are matching
-                if (input == '3' && largeWin == false && slotMachine[2, 0] == slotMachine[2, 1] && slotMachine[2, 1] == slotMachine[2, 2])
-                {
-                    Console.WriteLine($"\nYOU HIT A MATCH ON THE THIRD ROW! YOU WIN ${SMALL_WIN}\n\n");
-                    balance += SMALL_WIN;
-                }
-                //checks if the elements in all rows are matching
-                bool allRowsMatch = true;
+                //checks for matching rows
+                int matchingRows = 0;
                 for (int i = 0; i < rows; i++)
                 {
-                    if (!(input == '3' && largeWin == false && slotMachine[i, 0] == slotMachine[i, 1] && slotMachine[i, 1] == slotMachine[i, 2]))
+
+                    if (slotMachine[i, 0] == slotMachine[i, 1] && slotMachine[i, 1] == slotMachine[i, 2])
                     {
-                        allRowsMatch = false;
-                        break;
+                        Console.WriteLine($"\nYOU HIT A MATCH ON ROW {i + 1}! YOU WIN ${SMALL_WIN}!\n\n");
+                        balance += SMALL_WIN;
+                        matchingRows++;
                     }
                 }
 
-                if (allRowsMatch && input == '3')
-                {
-                    Console.WriteLine($"\nYOU HIT A MATCH ON ALL ROWS! YOU WIN ${MEDIUM_WIN}\n\n");
-                    balance += MEDIUM_WIN;
-                }
-
-                //checks if the elements in the first column are matching
-                if (input == '3' && largeWin == false && slotMachine[0, 0] == slotMachine[1, 0] && slotMachine[1, 0] == slotMachine[2, 0])
-                {
-                    Console.WriteLine($"\nYOU HIT A MATCH ON THE FIRST COLUMN! YOU WIN ${SMALL_WIN}\n\n");
-                    balance += SMALL_WIN;
-                }
-                //checks if the elements in the second column are matching
-                if (input == '3' && largeWin == false && slotMachine[0, 1] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[2, 1])
-                {
-                    Console.WriteLine($"\nYOU HIT A MATCH ON THE SECOND COLUMN! YOU WIN ${SMALL_WIN}\n\n");
-                    balance += SMALL_WIN;
-                }
-                //checks if the elements in the third column are matching
-                if (input == '3' && largeWin == false && slotMachine[0, 2] == slotMachine[1, 2] && slotMachine[1, 2] == slotMachine[2, 2])
-                {
-                    Console.WriteLine($"\nYOU HIT A MATCH ON THE THIRD COLUMN! YOU WIN ${SMALL_WIN}\n\n");
-                    balance += SMALL_WIN;
-                }
-                //checks if the elements in all columns are matching
-                bool allColumnsMatch = true;
+                //checks for matching columns
+                int matchingColumns = 0;
                 for (int j = 0; j < cols; j++)
                 {
-                    if (!(input == '3' && largeWin == false && slotMachine[0, j] == slotMachine[1, j] && slotMachine[1, j] == slotMachine[2, j]))
+                    if (slotMachine[0, j] == slotMachine[1, j] && slotMachine[1, j] == slotMachine[2, j])
                     {
-                        allColumnsMatch = false;
-                        break;
+                        Console.WriteLine($"\nYOU HIT A MATCH ON COLUMN {j + 1}! YOU WIN ${SMALL_WIN}!\n\n");
+                        balance += SMALL_WIN;
+                        matchingColumns++;
                     }
-                }
-
-                if (allColumnsMatch && input == '3')
-                {
-                    Console.WriteLine($"\nYOU HIT A MATCH ON ALL COLUMNS! YOU WIN ${SMALL_WIN}\n\n");
-                    balance += MEDIUM_WIN;
                 }
 
                 //checks if the elements in the left diagonal are matching
-                if (input == '3' && largeWin == false && slotMachine[0, 0] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[2, 2])
+                if (input == '3' && slotMachine[0, 0] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[2, 2])
                 {
-                    Console.WriteLine($"\nYOU HIT A MATCH ON THE DIAGONAL! YOU WIN ${SMALL_WIN}\n\n");
+                    Console.WriteLine($"\nYOU HIT A MATCH ON THE DIAGONAL! YOU WIN ${SMALL_WIN}!\n\n");
                     balance += SMALL_WIN;
                 }
                 //checks if the elements in the right diagonal are matching
-                if (input == '3' && largeWin == false && slotMachine[0, 2] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[2, 0])
+                if (input == '3' && slotMachine[0, 2] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[2, 0])
                 {
-                    Console.WriteLine($"\nYOU HIT A MATCH ON THE DIAGONAL! YOU WIN ${SMALL_WIN}\n\n");
+                    Console.WriteLine($"\nYOU HIT A MATCH ON THE DIAGONAL! YOU WIN ${SMALL_WIN}!\n\n");
                     balance += SMALL_WIN;
                 }
 
-                //checks if all elements are matching
-                if (allRowsMatch && allColumnsMatch && input == '3')
+                //checks for both matching rows and columns for a jackpot
+                if (matchingRows == rows && matchingColumns == cols)
                 {
-                    Console.WriteLine($"\nYOU HIT THE JACKPOT!!! YOU WIN ${LARGE_WIN}\n\n");
+                    Console.WriteLine($"\nJACKPOT!!! YOU WIN ${LARGE_WIN}!\n\n");
                     balance += LARGE_WIN;
-                    largeWin = true;
                 }
-
-                if (largeWin)
+                else if (matchingRows == rows || matchingColumns == cols)
                 {
-                    largeWin = false;
+                    Console.WriteLine($"\nYOU HIT A BIG WIN! YOU WIN ${MEDIUM_WIN}!\n\n");
+                    balance += MEDIUM_WIN;
                 }
 
                 bool restart = false;
