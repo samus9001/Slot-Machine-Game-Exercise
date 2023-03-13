@@ -85,7 +85,7 @@ namespace SlotMachine
 
                 if (input == '1')
                 {
-                    //loops through each element in the first row of the array and sets the values 
+                    //loops through each element in the first row of the array and sets the values
                     for (int j = 0; j < cols; j++)
                     {
                         index = rnd.Next(MAX_NUMBER);
@@ -190,6 +190,11 @@ namespace SlotMachine
                     Console.WriteLine($"\nYOU HIT THE JACKPOT!!! YOU WIN ${LARGE_WIN}\n\n");
                     balance += LARGE_WIN;
                     largeWin = true;
+                }
+
+                if (largeWin)
+                {
+                    largeWin = false;
                 }
 
                 bool restart = false;
