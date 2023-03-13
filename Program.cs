@@ -68,9 +68,24 @@ namespace SlotMachine
                     return;
                 }
 
+                //function used for looping through all elements in the array and setting their values
+                void SlotMachineInput(int[,] slotMachine, int rows, int cols, Random rnd)
+                {
+                    for (int i = 0; i < rows; i++)
+                    {
+                        for (int j = 0; j < cols; j++)
+                        {
+                            int index = rnd.Next(MAX_NUMBER);
+                            slotMachine[i, j] = index;
+                            Console.Write(slotMachine[i, j] + " ");
+                        }
+                        Console.WriteLine("\n");
+                    }
+                }
+
                 if (input == '1')
                 {
-                    //loops through each element in the first row of the array and sets the values
+                    //loops through each element in the first row of the array and sets the values 
                     for (int j = 0; j < cols; j++)
                     {
                         index = rnd.Next(MAX_NUMBER);
@@ -80,20 +95,9 @@ namespace SlotMachine
                     balance--;
                     Console.WriteLine("\n");
                 }
-
                 if (input == '3')
                 {
-                    //loops through each element in the array and sets the values
-                    for (int i = 0; i < rows; i++)
-                    {
-                        for (int j = 0; j < cols; j++)
-                        {
-                            index = rnd.Next(MAX_NUMBER);
-                            slotMachine[i, j] = index;
-                            Console.Write(slotMachine[i, j] + " ");
-                        }
-                        Console.WriteLine("\n");
-                    }
+                    SlotMachineInput(slotMachine, rows, cols, rnd);
                     balance = balance - MAX_LOSS;
                 }
 
