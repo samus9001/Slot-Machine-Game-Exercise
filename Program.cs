@@ -130,7 +130,7 @@ namespace SlotMachine
                     }
 
                     //checks if the elements in the diagonals are matching with three lines
-                    if (matchedRows != rows && matchedColumns != cols && slotMachine[0, 0] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[2, 2] || input != '1' && input == '3' && slotMachine[0, 2] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[2, 0])
+                    if (matchedRows != rows && matchedColumns != cols && slotMachine[0, 0] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[2, 2] || matchedRows != rows && matchedColumns != cols && slotMachine[0, 2] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[2, 0])
                     {
                         Console.WriteLine($"\nYOU HIT A MATCH ON THE DIAGONAL! YOU WIN ${SMALL_WIN}!\n\n");
                         balance += SMALL_WIN;
