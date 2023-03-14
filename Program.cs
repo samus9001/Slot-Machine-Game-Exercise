@@ -54,6 +54,7 @@ namespace SlotMachine
                 //checks if input is out of bounds
                 bool validOption = (input == '1' || input == '3' || input == 'L');
                 bool insufficientBalance = (balance < LOW_BALANCE && input != '1' && input != 'L');
+
                 if (!validOption || insufficientBalance)
                 {
                     Console.WriteLine("THAT IS NOT A VALID OPTION\n");
@@ -167,16 +168,16 @@ namespace SlotMachine
                     Console.WriteLine("IF YOU WOULD LIKE TO PLAY AGAIN PRESS 'Y' OR PRESS ANY OTHER KEY TO EXIT");
                     var key = Console.ReadKey().Key;
                     restart = key == ConsoleKey.Y;
-                }
 
-                if (restart)
-                {
-                    balance = STARTING_BALANCE;
-                    Console.Clear();
-                }
-                else if (balance <= 0)
-                {
-                    return;
+                    if (restart)
+                    {
+                        balance = STARTING_BALANCE;
+                        Console.Clear();
+                    }
+                    else
+                    {
+                        return;
+                    }
                 }
             }
         }
