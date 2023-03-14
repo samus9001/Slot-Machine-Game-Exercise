@@ -38,14 +38,14 @@ namespace SlotMachine
 
                 if (balance >= LOW_BALANCE)
                 {
-                    Console.WriteLine("PRESS '1' FOR ONE SPIN OR '3' FOR THREE SPINS\n\n");
+                    Console.WriteLine("PRESS '1' TO PLAY ONE LINE OR '3' TO PLAY THREE LINES\n\n");
                 }
                 else
                 {
-                    Console.WriteLine("PRESS '1' FOR ONE SPIN\n\n");
+                    Console.WriteLine("PRESS '1' TO PLAY ONE LINE\n\n");
                 }
 
-                Console.WriteLine("ONE SPIN COSTS $1\nTHREE SPINS COSTS $5\n");
+                Console.WriteLine("ONE LINE COSTS $1\nTHREE LINES COSTS $5\n");
                 Console.WriteLine("PRESS 'L' TO LEAVE WITH YOUR BALANCE");
 
                 input = Char.ToUpper(Console.ReadKey().KeyChar);
@@ -92,7 +92,7 @@ namespace SlotMachine
                     Console.WriteLine("\n");
                 }
 
-                //checks if the elements are matching for one spin
+                //checks if the elements are matching for one line
                 if (input == '1' && slotMachine[0, 0] == slotMachine[0, 1] && slotMachine[0, 1] == slotMachine[0, 2])
                 {
                     Console.WriteLine($"\nYOU HIT A MATCH! YOU WIN ${SMALL_WIN}\n\n");
@@ -105,11 +105,11 @@ namespace SlotMachine
                     balance = balance - MAX_LOSS;
                 }
 
-                //counter for matching rows and columns with three spins
+                //counter for matching rows and columns with three lines
                 int matchingRows = 0;
                 int matchingColumns = 0;
 
-                if (input != '1') //skips match conditions if one spin is played
+                if (input != '1') //skips match conditions if one line is played
                 {
                     for (int i = 0; i < rows; i++)
                     {
@@ -123,7 +123,7 @@ namespace SlotMachine
                     }
                 }
 
-                //checks for matching columns with three spins
+                //checks for matching columns with three lines
                 if (input != '1')
                 {
                     for (int j = 0; j < cols; j++)
@@ -137,7 +137,7 @@ namespace SlotMachine
                     }
                 }
 
-                //checks if the elements in the diagonals are matching with three spins
+                //checks if the elements in the diagonals are matching with three lines
                 if (matchingRows != rows && matchingColumns != cols && input != '1' && input == '3' && slotMachine[0, 0] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[2, 2] || input != '1' && input == '3' && slotMachine[0, 2] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[2, 0])
                 {
                     Console.WriteLine($"\nYOU HIT A MATCH ON THE DIAGONAL! YOU WIN ${SMALL_WIN}!\n\n");
