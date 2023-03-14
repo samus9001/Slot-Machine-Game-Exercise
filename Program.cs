@@ -52,7 +52,9 @@ namespace SlotMachine
                 Console.Clear();
 
                 //checks if input is out of bounds
-                if (input != '1' && input != '3' && input != 'L' || balance < LOW_BALANCE && input != '1' && input != 'L')
+                bool validOption = (input == '1' || input == '3' || input == 'L');
+                bool insufficientBalance = (balance < LOW_BALANCE && input != '1' && input != 'L');
+                if (!validOption || insufficientBalance)
                 {
                     Console.WriteLine("THAT IS NOT A VALID OPTION\n");
                     continue;
