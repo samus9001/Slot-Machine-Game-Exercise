@@ -105,14 +105,16 @@ namespace SlotMachine
                     balance = balance - MAX_LOSS;
                 }
 
-                //checks for matching rows with three spins
+                //counter for matching rows and columns with three spins
                 int matchingRows = 0;
+                int matchingColumns = 0;
+
                 if (input != '1') //skips match conditions if one spin is played
                 {
                     for (int i = 0; i < rows; i++)
                     {
 
-                        if (slotMachine[i, 0] == slotMachine[i, 1] && slotMachine[i, 1] == slotMachine[i, 2])
+                        if (matchingRows != rows && matchingColumns != cols && slotMachine[i, 0] == slotMachine[i, 1] && slotMachine[i, 1] == slotMachine[i, 2])
                         {
                             Console.WriteLine($"\nYOU HIT A MATCH ON ROW {i + 1}! YOU WIN ${SMALL_WIN}!\n\n");
                             balance += SMALL_WIN;
@@ -122,12 +124,11 @@ namespace SlotMachine
                 }
 
                 //checks for matching columns with three spins
-                int matchingColumns = 0;
                 if (input != '1')
                 {
                     for (int j = 0; j < cols; j++)
                     {
-                        if (slotMachine[0, j] == slotMachine[1, j] && slotMachine[1, j] == slotMachine[2, j])
+                        if (matchingRows != rows && matchingColumns != cols && slotMachine[0, j] == slotMachine[1, j] && slotMachine[1, j] == slotMachine[2, j])
                         {
                             Console.WriteLine($"\nYOU HIT A MATCH ON COLUMN {j + 1}! YOU WIN ${SMALL_WIN}!\n\n");
                             balance += SMALL_WIN;
@@ -137,7 +138,7 @@ namespace SlotMachine
                 }
 
                 //checks if the elements in the diagonals are matching with three spins
-                if (input != '1' && input == '3' && slotMachine[0, 0] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[2, 2] || input != '1' && input == '3' && slotMachine[0, 2] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[2, 0])
+                if (matchingRows != rows && matchingColumns != cols && input != '1' && input == '3' && slotMachine[0, 0] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[2, 2] || input != '1' && input == '3' && slotMachine[0, 2] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[2, 0])
                 {
                     Console.WriteLine($"\nYOU HIT A MATCH ON THE DIAGONAL! YOU WIN ${SMALL_WIN}!\n\n");
                     balance += SMALL_WIN;
