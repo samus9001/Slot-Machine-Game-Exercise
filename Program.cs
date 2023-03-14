@@ -163,8 +163,8 @@ namespace SlotMachine
                 {
                     Console.WriteLine("\nYOU LOSE! BETTER LUCK NEXT TIME\n");
                     Console.WriteLine("IF YOU WOULD LIKE TO PLAY AGAIN PRESS 'Y' OR PRESS ANY OTHER KEY TO EXIT");
-                    var key = Console.ReadKey().KeyChar;
-                    restart = Char.ToUpper(key) == 'Y';
+                    var key = Console.ReadKey().Key;
+                    restart = key == ConsoleKey.Y;
                 }
 
                 if (restart)
