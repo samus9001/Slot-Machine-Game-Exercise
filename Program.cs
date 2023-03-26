@@ -153,17 +153,14 @@ namespace SlotMachine
                     balance += MEDIUM_WIN;
                 }
 
-                //used to restart loop
-                bool restart;
-
+                //checks if the game is over
                 if (balance <= 0)
                 {
                     Console.WriteLine("\nYOU LOSE! BETTER LUCK NEXT TIME\n");
                     Console.WriteLine("IF YOU WOULD LIKE TO PLAY AGAIN PRESS 'Y' OR PRESS ANY OTHER KEY TO EXIT");
                     var key = Console.ReadKey().Key;
-                    restart = key == ConsoleKey.Y;
 
-                    if (restart)
+                    if (key == ConsoleKey.Y)
                     {
                         balance = STARTING_BALANCE;
                         Console.Clear();
