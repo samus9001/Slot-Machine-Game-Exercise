@@ -134,6 +134,19 @@ namespace SlotMachine
                         }
                     }
 
+                    //checks both matching rows and columns for a jackpot win
+                    if (matchedRows == rows && matchedColumns == cols)
+                    {
+                        Console.WriteLine($"\nJACKPOT!!! YOU WIN ${LARGE_WIN}!\n\n");
+                        balance += LARGE_WIN;
+                    }
+                    //checks if all rows or columns are matching for a bigger win
+                    else if (matchedRows == rows || matchedColumns == cols)
+                    {
+                        Console.WriteLine($"\nYOU HIT A BIG WIN!! YOU WIN ${MEDIUM_WIN}!\n\n");
+                        balance += MEDIUM_WIN;
+                    }
+
                     //checks if the elements in the diagonals are matching with three lines
                     if (matchedRows != rows && matchedColumns != cols && slotMachine[0, 0] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[2, 2] || matchedRows != rows && matchedColumns != cols && slotMachine[0, 2] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[2, 0])
                     {
@@ -145,18 +158,6 @@ namespace SlotMachine
                     balance -= MAX_LOSS;
                 }
 
-                //checks both matching rows and columns for a jackpot win
-                if (matchedRows == rows && matchedColumns == cols)
-                {
-                    Console.WriteLine($"\nJACKPOT!!! YOU WIN ${LARGE_WIN}!\n\n");
-                    balance += LARGE_WIN;
-                }
-                //checks if all rows or columns are matching for a bigger win
-                else if (matchedRows == rows || matchedColumns == cols)
-                {
-                    Console.WriteLine($"\nYOU HIT A BIG WIN!! YOU WIN ${MEDIUM_WIN}!\n\n");
-                    balance += MEDIUM_WIN;
-                }
 
                 //checks if the game is over
                 if (balance <= 0)
