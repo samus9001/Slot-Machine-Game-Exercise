@@ -73,6 +73,9 @@
 
                 if (input == '1')
                 {
+                    //decrease balance by 1 for playing one line
+                    balance--;
+
                     //set values for the first row of the array
                     for (int j = 0; j < cols; j++)
                     {
@@ -88,13 +91,13 @@
                         Console.WriteLine($"\nYOU HIT A MATCH! YOU WIN ${SMALL_WIN}\n\n");
                         balance += SMALL_WIN;
                     }
-
-                    //decrease balance by 1 for playing one line
-                    balance--;
                 }
 
                 else if (input == '3')
                 {
+                    //decrease balance by 5 for playing three lines
+                    balance -= MAX_LOSS;
+
                     //set values for all rows and columns of the array
                     for (int i = 0; i < rows; i++)
                     {
@@ -148,9 +151,6 @@
                         Console.WriteLine($"\nYOU HIT A MATCH ON THE DIAGONAL! YOU WIN ${SMALL_WIN}!\n\n");
                         balance += SMALL_WIN;
                     }
-
-                    //decrease balance by 5 for playing three lines
-                    balance -= MAX_LOSS;
                 }
 
 
