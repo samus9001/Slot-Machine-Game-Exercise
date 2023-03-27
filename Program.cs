@@ -76,21 +76,16 @@ namespace SlotMachine
                     return;
                 }
 
-                //set values for all rows and columns of the array
-                for (int i = 0; i < rows; i++)
+                if (input == '1')
                 {
+                    //set values for the first row of the array
                     for (int j = 0; j < cols; j++)
                     {
                         index = rnd.Next(MAX_NUMBER);
-                        slotMachine[i, j] = index;
-                        Console.Write(slotMachine[i, j] + " ");
+                        slotMachine[0, j] = index;
+                        Console.Write(slotMachine[0, j] + " ");
                     }
                     Console.WriteLine("\n");
-                }
-
-                if (input == '1')
-                {
-                    
 
                     //check for a match on the first row
                     if (slotMachine[0, 0] == slotMachine[0, 1] && slotMachine[0, 1] == slotMachine[0, 2])
@@ -105,7 +100,17 @@ namespace SlotMachine
 
                 else if (input == '3')
                 {
-                    
+                    //set values for all rows and columns of the array
+                    for (int i = 0; i < rows; i++)
+                    {
+                        for (int j = 0; j < cols; j++)
+                        {
+                            index = rnd.Next(MAX_NUMBER);
+                            slotMachine[i, j] = index;
+                            Console.Write(slotMachine[i, j] + " ");
+                        }
+                        Console.WriteLine("\n");
+                    }
 
                     //check for matches on all rows
                     for (int i = 0; i < rows; i++)
