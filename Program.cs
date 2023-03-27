@@ -110,7 +110,7 @@
                     //check for matches on all rows
                     for (int i = 0; i < rows; i++)
                     {
-                        if (matchedRows != rows && matchedColumns != cols && slotMachine[i, 0] == slotMachine[i, 1] && slotMachine[i, 1] == slotMachine[i, 2])
+                        if (slotMachine[i, 0] == slotMachine[i, 1] && slotMachine[i, 1] == slotMachine[i, 2])
                         {
                             Console.WriteLine($"\nYOU HIT A MATCH ON ROW {i + 1}! YOU WIN ${SMALL_WIN}!\n\n");
                             balance += SMALL_WIN;
@@ -121,7 +121,7 @@
                     //check for matches on all columns
                     for (int j = 0; j < cols; j++)
                     {
-                        if (matchedRows != rows && matchedColumns != cols && slotMachine[0, j] == slotMachine[1, j] && slotMachine[1, j] == slotMachine[2, j])
+                        if (slotMachine[0, j] == slotMachine[1, j] && slotMachine[1, j] == slotMachine[2, j])
                         {
                             Console.WriteLine($"\nYOU HIT A MATCH ON COLUMN {j + 1}! YOU WIN ${SMALL_WIN}!\n\n");
                             balance += SMALL_WIN;
