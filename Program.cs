@@ -2,7 +2,7 @@
 {
     internal class Program
     {
-        const int MAX_NUMBER = 10; //sets the upper bound of the array
+        const int MAX_NUMBER = 10; //sets the range of values that can be generated to fill the array
         const int MAX_LOSS = 5; //largest amount of balance that is lost
         const int SMALL_WIN = 50;
         const int MEDIUM_WIN = 500;
@@ -16,7 +16,7 @@
             var rnd = new Random();
             int index;
             int balance = STARTING_BALANCE;
-            char input;
+            char userInput;
 
             //creates a 3x3 array
             int[,] slotMachine = new int[3, 3];
@@ -47,11 +47,11 @@
                 Console.WriteLine("ONE LINE COSTS $1\nTHREE LINES COSTS $5\n\n");
                 Console.WriteLine("PRESS 'L' TO LEAVE WITH YOUR BALANCE");
 
-                input = Char.ToUpper(Console.ReadKey().KeyChar);
+                userInput = Char.ToUpper(Console.ReadKey().KeyChar);
                 Console.Clear();
 
                 //checks if input is out of bounds
-                bool validOption = (input == '1' || input == '3' || input == 'L');
+                bool validOption = (userInput == '1' || userInput == '3' || userInput == 'L');
 
                 if (!validOption)
                 {
@@ -59,68 +59,54 @@
                     continue;
                 }
 
-                if (input == '3' && balance < LOW_BALANCE)
+                if (userInput == '3' && balance < LOW_BALANCE)
                 {
                     Console.WriteLine("INSUFFICIENT BALANCE\n");
                     continue;
                 }
 
-                if (input == 'L')
+                if (userInput == 'L')
                 {
                     Console.WriteLine($"THANKS FOR PLAYING! YOUR FINAL BALANCE IS ${balance}!");
                     return;
                 }
 
-                if (input == '1')
-                {
-                    //decrease balance by 1 for playing one line
-                    balance--;
+                //used for setting the array length
+                int amountRows = 1;
+                int decreaseBalance = 1;
 
-                    //set values for the first row of the array
+                if (userInput == '3')
+                {
+                    amountRows = 3;
+                    decreaseBalance = MAX_LOSS;
+                }
+
+                //generates array values based on amount of lines played
+                for (int i = 0; i < amountRows; i++)
+                {
                     for (int j = 0; j < cols; j++)
                     {
                         index = rnd.Next(MAX_NUMBER);
-                        slotMachine[0, j] = index;
-                        Console.Write(slotMachine[0, j] + " ");
+                        slotMachine[i, j] = index;
+                        Console.Write(slotMachine[i, j] + " ");
                     }
                     Console.WriteLine("\n");
+                }
+                balance -= decreaseBalance;
 
-                    //check for a match on the first row
-                    if (slotMachine[0, 0] == slotMachine[0, 1] && slotMachine[0, 1] == slotMachine[0, 2])
+                //check for matches on all rows
+                for (int i = 0; i < amountRows; i++)
+                {
+                    if (slotMachine[i, 0] == slotMachine[i, 1] && slotMachine[i, 1] == slotMachine[i, 2])
                     {
-                        Console.WriteLine($"\nYOU HIT A MATCH! YOU WIN ${SMALL_WIN}\n\n");
+                        Console.WriteLine($"\nYOU HIT A MATCH ON ROW {i + 1}! YOU WIN ${SMALL_WIN}!\n\n");
                         balance += SMALL_WIN;
+                        matchedRows++;
                     }
                 }
 
-                else if (input == '3')
+                if (amountRows == 3)
                 {
-                    //decrease balance by 5 for playing three lines
-                    balance -= MAX_LOSS;
-
-                    //set values for all rows and columns of the array
-                    for (int i = 0; i < rows; i++)
-                    {
-                        for (int j = 0; j < cols; j++)
-                        {
-                            index = rnd.Next(MAX_NUMBER);
-                            slotMachine[i, j] = index;
-                            Console.Write(slotMachine[i, j] + " ");
-                        }
-                        Console.WriteLine("\n");
-                    }
-
-                    //check for matches on all rows
-                    for (int i = 0; i < rows; i++)
-                    {
-                        if (slotMachine[i, 0] == slotMachine[i, 1] && slotMachine[i, 1] == slotMachine[i, 2])
-                        {
-                            Console.WriteLine($"\nYOU HIT A MATCH ON ROW {i + 1}! YOU WIN ${SMALL_WIN}!\n\n");
-                            balance += SMALL_WIN;
-                            matchedRows++;
-                        }
-                    }
-
                     //check for matches on all columns
                     for (int j = 0; j < cols; j++)
                     {
@@ -132,27 +118,27 @@
                         }
                     }
 
-                    //checks both matching rows and columns for a jackpot win
-                    if (matchedRows == rows && matchedColumns == cols)
-                    {
-                        Console.WriteLine($"\nJACKPOT!!! YOU WIN ${LARGE_WIN}!\n\n");
-                        balance += LARGE_WIN;
-                    }
-                    //checks if all rows or columns are matching for a bigger win
-                    else if (matchedRows == rows || matchedColumns == cols)
-                    {
-                        Console.WriteLine($"\nYOU HIT A BIG WIN!! YOU WIN ${MEDIUM_WIN}!\n\n");
-                        balance += MEDIUM_WIN;
-                    }
-
                     //checks if the elements in the diagonals are matching with three lines
                     if (matchedRows != rows && matchedColumns != cols && slotMachine[0, 0] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[2, 2] || matchedRows != rows && matchedColumns != cols && slotMachine[0, 2] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[2, 0])
                     {
                         Console.WriteLine($"\nYOU HIT A MATCH ON THE DIAGONAL! YOU WIN ${SMALL_WIN}!\n\n");
                         balance += SMALL_WIN;
                     }
-                }
 
+                    //checks if all rows or columns are matching for a big win
+                    if (matchedRows == rows || matchedColumns == cols)
+                    {
+                        Console.WriteLine($"\nYOU HIT A BIG WIN!! YOU WIN ${MEDIUM_WIN}!\n\n");
+                        balance += MEDIUM_WIN;
+                    }
+
+                    //checks both matching rows and columns for a jackpot win
+                    else if (matchedRows == rows && matchedColumns == cols)
+                    {
+                        Console.WriteLine($"\nJACKPOT!!! YOU WIN ${LARGE_WIN}!\n\n");
+                        balance += LARGE_WIN;
+                    }
+                }
 
                 //checks if the game is over
                 if (balance <= 0)
