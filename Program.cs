@@ -25,13 +25,17 @@
             int rows = slotMachine.GetLength(0);
             int cols = slotMachine.GetLength(1);
 
+            //checks matchingDiagonals counter
+            int diags = 1;
+
             Console.WriteLine("WELCOME TO SLOTS!\n\n");
 
             while (true)
             {
                 //counter for matching rows and columns with three lines
-                int matchedRows = 0;
-                int matchedColumns = 0;
+                int matchingRows = 0;
+                int matchingColumns = 0;
+                int matchingDiagonals = 0;
 
                 Console.WriteLine($"BALANCE = ${balance}\n\n");
 
@@ -97,11 +101,11 @@
                 //check for matches on all rows
                 for (int i = 0; i < amountRows; i++)
                 {
-                    if (matchedRows != rows && matchedColumns != cols && slotMachine[i, 0] == slotMachine[i, 1] && slotMachine[i, 1] == slotMachine[i, 2])
+                    if (matchingRows != rows && matchingColumns != cols && slotMachine[i, 0] == slotMachine[i, 1] && slotMachine[i, 1] == slotMachine[i, 2])
                     {
                         Console.WriteLine($"\nYOU HIT A MATCH ON ROW {i + 1}! YOU WIN ${SMALL_WIN}!\n\n");
                         balance += SMALL_WIN;
-                        matchedRows++;
+                        matchingRows++;
                     }
                 }
 
@@ -110,30 +114,36 @@
                     //check for matches on all columns
                     for (int j = 0; j < cols; j++)
                     {
-                        if (matchedRows != rows && matchedColumns != cols && slotMachine[0, j] == slotMachine[1, j] && slotMachine[1, j] == slotMachine[2, j])
+                        if (matchingRows != rows && matchingColumns != cols && slotMachine[0, j] == slotMachine[1, j] && slotMachine[1, j] == slotMachine[2, j])
                         {
                             Console.WriteLine($"\nYOU HIT A MATCH ON COLUMN {j + 1}! YOU WIN ${SMALL_WIN}!\n\n");
                             balance += SMALL_WIN;
-                            matchedColumns++;
+                            matchingColumns++;
                         }
                     }
 
-                    //checks if the elements in the diagonals are matching with three lines
-                    if (matchedRows != rows && matchedColumns != cols && slotMachine[0, 0] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[2, 2] || matchedRows != rows && matchedColumns != cols && slotMachine[0, 2] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[2, 0])
+                    //checks for a match on either diagonal then increases counter
+                    if (slotMachine[0, 0] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[2, 2] || slotMachine[0, 2] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[2, 0])
+                    {
+                        matchingDiagonals++;
+                    }
+
+                    //checks if the elements in either diagonals are matching
+                    if (matchingRows != rows && matchingColumns != cols && matchingDiagonals == diags)
                     {
                         Console.WriteLine($"\nYOU HIT A MATCH ON THE DIAGONAL! YOU WIN ${SMALL_WIN}!\n\n");
                         balance += SMALL_WIN;
                     }
 
                     //checks if all rows or columns are matching for a big win
-                    if (matchedRows == rows || matchedColumns == cols)
+                    if (matchingRows == rows || matchingColumns == cols)
                     {
                         Console.WriteLine($"\nYOU HIT A BIG WIN!! YOU WIN ${MEDIUM_WIN}!\n\n");
                         balance += MEDIUM_WIN;
                     }
 
                     //checks both matching rows and columns for a jackpot win
-                    else if (matchedRows == rows && matchedColumns == cols)
+                    else if (matchingRows == rows && matchingColumns == cols)
                     {
                         Console.WriteLine($"\nJACKPOT!!! YOU WIN ${LARGE_WIN}!\n\n");
                         balance += LARGE_WIN;
