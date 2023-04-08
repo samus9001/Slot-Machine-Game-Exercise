@@ -25,7 +25,7 @@
             // checks matchingDiagonals counter
             int diags = 1;
 
-            Console.WriteLine("WELCOME TO SLOTS!\n\n");
+            UIMethods.Welcome();
 
             while (true)
             {
@@ -34,18 +34,18 @@
                 int matchingColumns = 0;
                 int matchingDiagonals = 0;
 
-                Console.WriteLine($"BALANCE = ${balance}\n\n");
+                UIMethods.Balance(balance);
 
                 if (balance >= LOW_BALANCE)
                 {
-                    Console.WriteLine("PRESS '1' TO PLAY ONE LINE OR '3' TO PLAY THREE LINES\n\n");
+                    UIMethods.sufficientBalance();
                 }
                 else
                 {
-                    Console.WriteLine("PRESS '1' TO PLAY ONE LINE\n\n");
+                    UIMethods.lowBalance();
                 }
 
-                Instructions();
+                UIMethods.Instructions();
 
                 userInput = Char.ToUpper(Console.ReadKey().KeyChar);
                 Console.Clear();
@@ -55,19 +55,19 @@
 
                 if (!validOption)
                 {
-                    Console.WriteLine("THAT IS NOT A VALID OPTION\n");
+                    UIMethods.invalidOption();
                     continue;
                 }
 
                 if (userInput == '3' && balance < LOW_BALANCE)
                 {
-                    Console.WriteLine("INSUFFICIENT BALANCE\n");
+                    UIMethods.insufficientBalance();
                     continue;
                 }
 
                 if (userInput == 'L')
                 {
-                    Console.WriteLine($"THANKS FOR PLAYING! YOUR FINAL BALANCE IS ${balance}!");
+                    UIMethods.finalBalance(balance);
                     return;
                 }
 
@@ -81,14 +81,14 @@
                     decreaseBalance = MAX_LOSS;
                 }
 
-                slotMachine = GenerateSlotMachineArray(slotMachine, amountRows, MAX_NUMBER);
+                slotMachine = LogicMethods.GenerateSlotMachineArray(slotMachine, amountRows, MAX_NUMBER);
                 balance -= decreaseBalance;
 
-                matchRows(amountRows, matchingRows, matchingColumns, rows, cols, slotMachine, balance);
+                LogicMethods.matchRows(amountRows, matchingRows, matchingColumns, rows, cols, slotMachine, balance, SMALL_WIN);
 
                 if (amountRows == 3)
                 {
-                    matchColumns(matchingRows, matchingColumns, rows, cols, slotMachine, SMALL_WIN, balance);
+                    LogicMethods.matchColumns(matchingRows, matchingColumns, rows, cols, slotMachine, SMALL_WIN, balance);
 
                     // checks for a match on either diagonal then increases counter
                     if (slotMachine[0, 0] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[2, 2] || slotMachine[0, 2] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[2, 0])
@@ -121,7 +121,7 @@
                 // checks if the game is over
                 if (balance <= 0)
                 {
-                    gameOver();
+                    UIMethods.gameOver();
                     var key = Console.ReadKey().Key;
 
                     if (key == ConsoleKey.Y)
@@ -135,93 +135,6 @@
                     }
                 }
             }
-        }
-
-        /// <summary>
-        /// sets the UI instructions 
-        /// </summary>
-        static void Instructions()
-        {
-            Console.WriteLine("ONE LINE COSTS $1\nTHREE LINES COSTS $5\n\n");
-            Console.WriteLine("PRESS 'L' TO LEAVE WITH YOUR BALANCE");
-        }
-
-        /// <summary>
-        /// generates array values based on amount of lines played
-        /// </summary>
-        /// <param name="slotMachine"></param>
-        /// <param name="amountRows"></param>
-        /// <param name="MAX_NUMBER"></param>
-        /// <returns></returns>
-        static int[,] GenerateSlotMachineArray(int[,] slotMachine, int amountRows, int MAX_NUMBER)
-        {
-            var rnd = new Random();
-            int index;
-            int cols = slotMachine.GetLength(1);
-
-            for (int i = 0; i < amountRows; i++)
-            {
-                for (int j = 0; j < cols; j++)
-                {
-                    index = rnd.Next(MAX_NUMBER);
-                    slotMachine[i, j] = index;
-                    Console.Write(slotMachine[i, j] + " ");
-                }
-                Console.WriteLine("\n");
-            }
-            return slotMachine;
-        }
-
-        /// <summary>
-        /// check for matches on all rows
-        /// </summary>
-        /// <param name="amountRows"></param>
-        /// <param name="matchingRows"></param>
-        /// <param name="matchingColumns"></param>
-        /// <param name="rows"></param>
-        /// <param name="cols"></param>
-        /// <param name="slotMachine"></param>
-        /// <param name="balance"></param>
-        static void matchRows(int amountRows, int matchingRows, int matchingColumns, int rows, int cols, int[,] slotMachine, int balance)
-        {
-            for (int i = 0; i < amountRows; i++)
-            {
-                if (matchingRows != rows && matchingColumns != cols && slotMachine[i, 0] == slotMachine[i, 1] && slotMachine[i, 1] == slotMachine[i, 2])
-                {
-                    Console.WriteLine($"\nYOU HIT A MATCH ON ROW {i + 1}! YOU WIN ${SMALL_WIN}!\n\n");
-                    balance += SMALL_WIN;
-                    matchingRows++;
-                }
-            }
-        }
-
-        /// <summary>
-        /// check for matches on all columns
-        /// </summary>
-        /// <param name="matchingRows"></param>
-        /// <param name="matchingColumns"></param>
-        /// <param name="rows"></param>
-        /// <param name="cols"></param>
-        /// <param name="slotMachine"></param>
-        /// <param name="SMALL_WIN"></param>
-        /// <param name="balance"></param>
-        static void matchColumns(int matchingRows, int matchingColumns, int rows, int cols, int[,] slotMachine, int SMALL_WIN, int balance)
-        {
-            for (int j = 0; j < cols; j++)
-            {
-                if (matchingRows != rows && matchingColumns != cols && slotMachine[0, j] == slotMachine[1, j] && slotMachine[1, j] == slotMachine[2, j])
-                {
-                    Console.WriteLine($"\nYOU HIT A MATCH ON COLUMN {j + 1}! YOU WIN ${SMALL_WIN}!\n\n");
-                    balance += SMALL_WIN;
-                    matchingColumns++;
-                }
-            }
-        }
-
-        static void gameOver()
-        {
-            Console.WriteLine("\nYOU LOSE! BETTER LUCK NEXT TIME\n");
-            Console.WriteLine("IF YOU WOULD LIKE TO PLAY AGAIN PRESS 'Y' OR PRESS ANY OTHER KEY TO EXIT");
         }
     }
 }
