@@ -9,6 +9,7 @@
         const int LARGE_WIN = 1000;
         const int STARTING_BALANCE = 100;
         const int LOW_BALANCE = 5; // sets the limit on available lines depending on balance
+        const int diags = 2; // sets the amount of diagonals to check for matches
 
         static void Main(string[] args)
         {
@@ -21,9 +22,6 @@
             // checks the length of each dimension of the array
             int rows = slotMachine.GetLength(0);
             int cols = slotMachine.GetLength(1);
-
-            // checks matchingDiagonals counter
-            int diags = 1;
 
             UIMethods.Welcome();
 
@@ -84,24 +82,12 @@
                 slotMachine = LogicMethods.GenerateSlotMachineArray(slotMachine, amountRows, MAX_NUMBER);
                 balance -= decreaseBalance;
 
-                LogicMethods.matchRows(amountRows, matchingRows, matchingColumns, rows, cols, slotMachine, balance, SMALL_WIN);
+                LogicMethods.matchRows(amountRows, slotMachine, SMALL_WIN, balance, matchingRows);
 
                 if (amountRows == 3)
                 {
-                    LogicMethods.matchColumns(matchingRows, matchingColumns, rows, cols, slotMachine, SMALL_WIN, balance);
-
-                    // checks for a match on either diagonal then increases counter
-                    if (slotMachine[0, 0] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[2, 2] || slotMachine[0, 2] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[2, 0])
-                    {
-                        matchingDiagonals++;
-                    }
-
-                    // checks if the elements in either diagonals are matching
-                    if (matchingRows != rows && matchingColumns != cols && matchingDiagonals == diags)
-                    {
-                        Console.WriteLine($"\nYOU HIT A MATCH ON THE DIAGONAL! YOU WIN ${SMALL_WIN}!\n\n");
-                        balance += SMALL_WIN;
-                    }
+                    LogicMethods.matchColumns(cols, slotMachine, SMALL_WIN, balance, matchingColumns);
+                    LogicMethods.matchDiagonals(diags, slotMachine, SMALL_WIN, balance, matchingDiagonals);
 
                     // checks if all rows or columns are matching for a big win
                     if (matchingRows == rows || matchingColumns == cols)
