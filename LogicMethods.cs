@@ -35,45 +35,44 @@ namespace SlotMachine
         }
 
         /// <summary>
-        /// check for matches on all rows
+        /// checks for matches on all rows
         /// </summary>
+        /// <param name="matchingRows"></param>
         /// <param name="amountRows"></param>
         /// <param name="slotMachine"></param>
-        /// <param name="SMALL_WIN"></param>
-        /// <param name="balance"></param>
-        /// <param name="matchingRows"></param>
-        public static void matchRows(int amountRows, int[,] slotMachine, int SMALL_WIN, int balance, int matchingRows)
+        /// <returns></returns>
+        public static int CheckMatchingRows(int amountRows, int[,] slotMachine, int matchingRows, ref int balance, int SMALL_WIN)
         {
             for (int i = 0; i < amountRows; i++)
             {
                 if (slotMachine[i, 0] == slotMachine[i, 1] && slotMachine[i, 1] == slotMachine[i, 2])
                 {
-                    Console.WriteLine($"\nYOU HIT A MATCH ON ROW {i + 1}! YOU WIN ${SMALL_WIN}!\n\n");
-                    balance += SMALL_WIN;
                     matchingRows++;
+                    balance += SMALL_WIN;
                 }
             }
+            return matchingRows;
         }
 
         /// <summary>
-        /// check for matches on all columns
+        /// checks for matches on all columns
         /// </summary>
         /// <param name="cols"></param>
         /// <param name="slotMachine"></param>
         /// <param name="SMALL_WIN"></param>
         /// <param name="balance"></param>
         /// <param name="matchingColumns"></param>
-        public static void matchColumns(int cols, int[,] slotMachine, int SMALL_WIN, int balance, int matchingColumns)
+        public static int CheckMatchingColumns(int cols, int[,] slotMachine, int matchingColumns, ref int balance, int SMALL_WIN)
         {
             for (int j = 0; j < cols; j++)
             {
                 if (slotMachine[0, j] == slotMachine[1, j] && slotMachine[1, j] == slotMachine[2, j])
                 {
-                    Console.WriteLine($"\nYOU HIT A MATCH ON COLUMN {j + 1}! YOU WIN ${SMALL_WIN}!\n\n");
-                    balance += SMALL_WIN;
                     matchingColumns++;
+                    balance += SMALL_WIN;
                 }
             }
+            return matchingColumns;
         }
 
         /// <summary>
@@ -84,23 +83,23 @@ namespace SlotMachine
         /// <param name="SMALL_WIN"></param>
         /// <param name="balance"></param>
         /// <param name="matchingDiagonals"></param>
-        public static void matchDiagonals(int diags, int[,] slotMachine, int SMALL_WIN, int balance, int matchingDiagonals)
+        public static int CheckMatchingDiagonals(int diags, int[,] slotMachine, int matchingDiagonals, ref int balance, int SMALL_WIN)
         {
             for (int i = 0; i < diags; i++)
             {
                 if (i == 0 && slotMachine[0, 0] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[2, 2])
                 {
-                    Console.WriteLine($"\nYOU HIT A MATCH ON THE LEFT DIAGONAL! YOU WIN ${SMALL_WIN}!\n\n");
+                    matchingDiagonals++; 
                     balance += SMALL_WIN;
-                    matchingDiagonals++;
+                    
                 }
                 else if (i == 1 && slotMachine[0, 2] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[2, 0])
                 {
-                    Console.WriteLine($"\nYOU HIT A MATCH ON THE RIGHT DIAGONAL! YOU WIN ${SMALL_WIN}!\n\n");
+                    matchingDiagonals++; 
                     balance += SMALL_WIN;
-                    matchingDiagonals++;
                 }
             }
+            return matchingDiagonals;
         }
     }
 }

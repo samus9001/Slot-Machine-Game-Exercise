@@ -28,7 +28,7 @@ namespace SlotMachine
         /// <summary>
         /// sets the UI instructions to play when balance is above the sufficient threshold
         /// </summary>
-        public static void sufficientBalance()
+        public static void SufficientBalance()
         {
             Console.WriteLine("PRESS '1' TO PLAY ONE LINE OR '3' TO PLAY THREE LINES\n\n");
         }
@@ -36,7 +36,7 @@ namespace SlotMachine
         /// <summary>
         /// sets the UI instructions to play when balance is below the sufficient threshold
         /// </summary>
-        public static void lowBalance()
+        public static void LowBalance()
         {
             Console.WriteLine("PRESS '1' TO PLAY ONE LINE\n\n");
         }
@@ -53,7 +53,7 @@ namespace SlotMachine
         /// <summary>
         /// sets the UI message for invalid input
         /// </summary>
-        public static void invalidOption()
+        public static void InvalidOption()
         {
             Console.WriteLine("THAT IS NOT A VALID OPTION\n");
         }
@@ -62,15 +62,50 @@ namespace SlotMachine
         /// sets the UI message when the user ends the game
         /// </summary>
         /// <param name="balance"></param>
-        public static void finalBalance(int balance)
+        public static void FinalBalance(int balance)
         {
             Console.WriteLine($"THANKS FOR PLAYING! YOUR FINAL BALANCE IS ${balance}!");
         }
 
         /// <summary>
+        /// sets the UI message when there is a match on the rows
+        /// </summary>
+        /// <param name="matchingRows"></param>
+        /// <param name="SMALL_WIN"></param>
+        /// <param name="balance"></param>
+        public static void RowsMatch(int matchingRows, int SMALL_WIN)
+        {
+            for (int i = 0; i < matchingRows; i++)
+            {
+                Console.WriteLine($"\nYOU HIT A ROW MATCH! YOU WIN ${SMALL_WIN}!\n\n");
+            }
+        }
+
+        /// <summary>
+        /// sets the UI message when there is a match on the columns
+        /// </summary>
+        /// <param name="matchingColumns"></param>
+        /// <param name="SMALL_WIN"></param>
+        public static void ColumnsMatch(int matchingColumns, int SMALL_WIN)
+        {
+            for (int j = 0; j < matchingColumns; j++)
+            {
+                Console.WriteLine($"\nYOU HIT A COLUMN MATCH! YOU WIN ${SMALL_WIN}!\n\n");
+            }
+        }
+
+        public static void DiagonalsMatch(int matchingDiagonals, int SMALL_WIN)
+        {
+            for (int k = 0; k < matchingDiagonals; k++)
+            {
+                Console.WriteLine($"\nYOU HIT A DIAGONAL MATCH! YOU WIN ${SMALL_WIN}!\n\n");
+            }
+        }
+
+        /// <summary>
         /// sets the UI message when balance is below the sufficient threshold
         /// </summary>
-        public static void insufficientBalance()
+        public static void InsufficientBalance()
         {
             Console.WriteLine("INSUFFICIENT BALANCE\n");
         }
@@ -79,7 +114,7 @@ namespace SlotMachine
         /// sets the UI instructions after the balance runs out
         /// </summary>
         /// 
-        public static void gameOver()
+        public static void GameOver()
         {
             Console.WriteLine("\nYOU LOSE! BETTER LUCK NEXT TIME\n");
             Console.WriteLine("IF YOU WOULD LIKE TO PLAY AGAIN PRESS 'Y' OR PRESS ANY OTHER KEY TO EXIT");

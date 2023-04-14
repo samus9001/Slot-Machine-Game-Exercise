@@ -2,7 +2,7 @@
 {
     internal class Program
     {
-        const int MAX_NUMBER = 10; // sets the range of values that can be generated to fill the array
+        const int MAX_NUMBER = 0; // sets the range of values that can be generated to fill the array
         const int MAX_LOSS = 5; // largest amount of balance that is lost
         const int SMALL_WIN = 50;
         const int MEDIUM_WIN = 500;
@@ -27,7 +27,7 @@
 
             while (true)
             {
-                // counter for matching rows and columns with three lines
+                // counter variables used for checking for matches
                 int matchingRows = 0;
                 int matchingColumns = 0;
                 int matchingDiagonals = 0;
@@ -36,11 +36,11 @@
 
                 if (balance >= LOW_BALANCE)
                 {
-                    UIMethods.sufficientBalance();
+                    UIMethods.SufficientBalance();
                 }
                 else
                 {
-                    UIMethods.lowBalance();
+                    UIMethods.LowBalance();
                 }
 
                 UIMethods.Instructions();
@@ -53,19 +53,19 @@
 
                 if (!validOption)
                 {
-                    UIMethods.invalidOption();
+                    UIMethods.InvalidOption();
                     continue;
                 }
 
                 if (userInput == '3' && balance < LOW_BALANCE)
                 {
-                    UIMethods.insufficientBalance();
+                    UIMethods.InsufficientBalance();
                     continue;
                 }
 
                 if (userInput == 'L')
                 {
-                    UIMethods.finalBalance(balance);
+                    UIMethods.FinalBalance(balance);
                     return;
                 }
 
@@ -82,32 +82,36 @@
                 slotMachine = LogicMethods.GenerateSlotMachineArray(slotMachine, amountRows, MAX_NUMBER);
                 balance -= decreaseBalance;
 
-                LogicMethods.matchRows(amountRows, slotMachine, SMALL_WIN, balance, matchingRows);
+                matchingRows = LogicMethods.CheckMatchingRows(amountRows, slotMachine, matchingRows, ref balance, SMALL_WIN);
+                UIMethods.RowsMatch(matchingRows, SMALL_WIN);
 
                 if (amountRows == 3)
                 {
-                    LogicMethods.matchColumns(cols, slotMachine, SMALL_WIN, balance, matchingColumns);
-                    LogicMethods.matchDiagonals(diags, slotMachine, SMALL_WIN, balance, matchingDiagonals);
+                    matchingColumns = LogicMethods.CheckMatchingColumns(cols, slotMachine, matchingColumns, ref balance, SMALL_WIN);
+                    UIMethods.ColumnsMatch(matchingColumns, SMALL_WIN);
 
-                    // checks if all rows or columns are matching for a big win
-                    if (matchingRows == rows || matchingColumns == cols)
-                    {
-                        Console.WriteLine($"\nYOU HIT A BIG WIN!! YOU WIN ${MEDIUM_WIN}!\n\n");
-                        balance += MEDIUM_WIN;
-                    }
+                    matchingDiagonals = LogicMethods.CheckMatchingDiagonals(diags, slotMachine, matchingDiagonals, ref balance, SMALL_WIN);
+                    UIMethods.DiagonalsMatch(matchingDiagonals, SMALL_WIN);
 
                     // checks both matching rows and columns for a jackpot win
-                    else if (matchingRows == rows && matchingColumns == cols)
+                    if (matchingRows == rows && matchingColumns == cols)
                     {
                         Console.WriteLine($"\nJACKPOT!!! YOU WIN ${LARGE_WIN}!\n\n");
                         balance += LARGE_WIN;
+                    }
+
+                    // checks if all rows or columns are matching for a big win
+                    else if (matchingRows == rows || matchingColumns == cols)
+                    {
+                        Console.WriteLine($"\nYOU HIT A BIG WIN!! YOU WIN ${MEDIUM_WIN}!\n\n");
+                        balance += MEDIUM_WIN;
                     }
                 }
 
                 // checks if the game is over
                 if (balance <= 0)
                 {
-                    UIMethods.gameOver();
+                    UIMethods.GameOver();
                     var key = Console.ReadKey().Key;
 
                     if (key == ConsoleKey.Y)
