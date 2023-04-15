@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SlotMachine
 {
     public static class LogicMethods
     {
         /// <summary>
-        /// generates array values based on amount of lines played
+        /// generates SlotMachine array values based on amount of lines played
         /// </summary>
         /// <param name="slotMachine"></param>
         /// <param name="amountRows"></param>
@@ -27,9 +23,7 @@ namespace SlotMachine
                 {
                     index = rnd.Next(MAX_NUMBER);
                     slotMachine[i, j] = index;
-                    Console.Write(slotMachine[i, j] + " ");
                 }
-                Console.WriteLine("\n");
             }
             return slotMachine;
         }
@@ -89,17 +83,41 @@ namespace SlotMachine
             {
                 if (i == 0 && slotMachine[0, 0] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[2, 2])
                 {
-                    matchingDiagonals++; 
+                    matchingDiagonals++;
                     balance += SMALL_WIN;
-                    
+
                 }
                 else if (i == 1 && slotMachine[0, 2] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[2, 0])
                 {
-                    matchingDiagonals++; 
+                    matchingDiagonals++;
                     balance += SMALL_WIN;
                 }
             }
             return matchingDiagonals;
+        }
+
+        /// <summary>
+        /// checks for Jackpot match or big win match
+        /// </summary>
+        /// <param name="matchingRows"></param>
+        /// <param name="rows"></param>
+        /// <param name="matchingColumns"></param>
+        /// <param name="cols"></param>
+        /// <param name="LARGE_WIN"></param>
+        /// <param name="MEDIUM_WIN"></param>
+        /// <param name="balance"></param>
+        public static void CheckBigWin(int matchingRows, int rows, int matchingColumns, int cols, int LARGE_WIN, int MEDIUM_WIN, ref int balance)
+        {
+            if (matchingRows == rows && matchingColumns == cols)
+            {
+                UIMethods.DisplayJackpotWin(LARGE_WIN);
+                balance += LARGE_WIN;
+            }
+            else if (matchingRows == rows || matchingColumns == cols)
+            {
+                UIMethods.DisplayBigWin(MEDIUM_WIN);
+                balance += MEDIUM_WIN;
+            }
         }
     }
 }

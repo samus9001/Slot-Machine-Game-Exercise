@@ -23,7 +23,7 @@
             int rows = slotMachine.GetLength(0);
             int cols = slotMachine.GetLength(1);
 
-            UIMethods.Welcome();
+            UIMethods.DisplayWelcome();
 
             while (true)
             {
@@ -32,18 +32,18 @@
                 int matchingColumns = 0;
                 int matchingDiagonals = 0;
 
-                UIMethods.Balance(balance);
+                UIMethods.DisplayBalance(balance);
 
                 if (balance >= LOW_BALANCE)
                 {
-                    UIMethods.SufficientBalance();
+                    UIMethods.DisplaySufficientBalance();
                 }
                 else
                 {
-                    UIMethods.LowBalance();
+                    UIMethods.DisplayLowBalance();
                 }
 
-                UIMethods.Instructions();
+                UIMethods.DisplayInstructions();
 
                 userInput = Char.ToUpper(Console.ReadKey().KeyChar);
                 Console.Clear();
@@ -53,19 +53,19 @@
 
                 if (!validOption)
                 {
-                    UIMethods.InvalidOption();
+                    UIMethods.DisplayInvalidOption();
                     continue;
                 }
 
                 if (userInput == '3' && balance < LOW_BALANCE)
                 {
-                    UIMethods.InsufficientBalance();
+                    UIMethods.DisplayInsufficientBalance();
                     continue;
                 }
 
                 if (userInput == 'L')
                 {
-                    UIMethods.FinalBalance(balance);
+                    UIMethods.DisplayFinalBalance(balance);
                     return;
                 }
 
@@ -80,38 +80,28 @@
                 }
 
                 slotMachine = LogicMethods.GenerateSlotMachineArray(slotMachine, amountRows, MAX_NUMBER);
+                UIMethods.DisplaySlotMachineArray(slotMachine, amountRows);
                 balance -= decreaseBalance;
 
                 matchingRows = LogicMethods.CheckMatchingRows(amountRows, slotMachine, matchingRows, ref balance, SMALL_WIN);
-                UIMethods.RowsMatch(matchingRows, SMALL_WIN);
+                UIMethods.DisplayRowsMatch(matchingRows, SMALL_WIN);
 
                 if (amountRows == 3)
                 {
                     matchingColumns = LogicMethods.CheckMatchingColumns(cols, slotMachine, matchingColumns, ref balance, SMALL_WIN);
-                    UIMethods.ColumnsMatch(matchingColumns, SMALL_WIN);
+                    UIMethods.DisplayColumnsMatch(matchingColumns, SMALL_WIN);
 
                     matchingDiagonals = LogicMethods.CheckMatchingDiagonals(diags, slotMachine, matchingDiagonals, ref balance, SMALL_WIN);
-                    UIMethods.DiagonalsMatch(matchingDiagonals, SMALL_WIN);
+                    UIMethods.DisplayDiagonalsMatch(matchingDiagonals, SMALL_WIN);
 
-                    // checks both matching rows and columns for a jackpot win
-                    if (matchingRows == rows && matchingColumns == cols)
-                    {
-                        Console.WriteLine($"\nJACKPOT!!! YOU WIN ${LARGE_WIN}!\n\n");
-                        balance += LARGE_WIN;
-                    }
-
-                    // checks if all rows or columns are matching for a big win
-                    else if (matchingRows == rows || matchingColumns == cols)
-                    {
-                        Console.WriteLine($"\nYOU HIT A BIG WIN!! YOU WIN ${MEDIUM_WIN}!\n\n");
-                        balance += MEDIUM_WIN;
-                    }
+                    LogicMethods.CheckBigWin(matchingRows, rows, matchingColumns, cols, LARGE_WIN, MEDIUM_WIN, ref balance);
                 }
 
                 // checks if the game is over
                 if (balance <= 0)
                 {
-                    UIMethods.GameOver();
+                    UIMethods.DisplayGameOver();
+
                     var key = Console.ReadKey().Key;
 
                     if (key == ConsoleKey.Y)
