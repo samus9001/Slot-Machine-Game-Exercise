@@ -2,7 +2,7 @@
 {
     internal class Program
     {
-        const int MAX_NUMBER = 0; // sets the range of values that can be generated to fill the array
+        const int MAX_NUMBER = 10; // sets the range of values that can be generated to fill the array
         const int MAX_LOSS = 5; // largest amount of balance that is lost
         const int SMALL_WIN = 50;
         const int MEDIUM_WIN = 500;
@@ -83,18 +83,19 @@
                 UIMethods.DisplaySlotMachineArray(slotMachine, amountRows);
                 balance -= decreaseBalance;
 
-                matchingRows = LogicMethods.CheckMatchingRows(amountRows, slotMachine, matchingRows, ref balance, SMALL_WIN);
+                matchingRows = LogicMethods.CheckMatchingRows(amountRows, slotMachine, matchingRows);
                 UIMethods.DisplayRowsMatch(matchingRows, SMALL_WIN);
+                LogicMethods.SmallBalanceIncrease(matchingRows, rows, matchingColumns, cols, matchingDiagonals, ref balance, SMALL_WIN);
 
                 if (amountRows == 3)
                 {
-                    matchingColumns = LogicMethods.CheckMatchingColumns(cols, slotMachine, matchingColumns, ref balance, SMALL_WIN);
+                    matchingColumns = LogicMethods.CheckMatchingColumns(cols, slotMachine, matchingColumns);
                     UIMethods.DisplayColumnsMatch(matchingColumns, SMALL_WIN);
 
-                    matchingDiagonals = LogicMethods.CheckMatchingDiagonals(diags, slotMachine, matchingDiagonals, ref balance, SMALL_WIN);
+                    matchingDiagonals = LogicMethods.CheckMatchingDiagonals(diags, slotMachine, matchingDiagonals);
                     UIMethods.DisplayDiagonalsMatch(matchingDiagonals, SMALL_WIN);
 
-                    LogicMethods.CheckBigWin(matchingRows, rows, matchingColumns, cols, LARGE_WIN, MEDIUM_WIN, ref balance);
+                    LogicMethods.CheckJackpotOrBigWin(matchingRows, rows, matchingColumns, cols, LARGE_WIN, MEDIUM_WIN, ref balance);
                 }
 
                 // checks if the game is over

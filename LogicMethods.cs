@@ -31,18 +31,17 @@ namespace SlotMachine
         /// <summary>
         /// checks for matches on all rows
         /// </summary>
-        /// <param name="matchingRows"></param>
         /// <param name="amountRows"></param>
         /// <param name="slotMachine"></param>
+        /// <param name="matchingRows"></param>
         /// <returns></returns>
-        public static int CheckMatchingRows(int amountRows, int[,] slotMachine, int matchingRows, ref int balance, int SMALL_WIN)
+        public static int CheckMatchingRows(int amountRows, int[,] slotMachine, int matchingRows)
         {
             for (int i = 0; i < amountRows; i++)
             {
                 if (slotMachine[i, 0] == slotMachine[i, 1] && slotMachine[i, 1] == slotMachine[i, 2])
                 {
                     matchingRows++;
-                    balance += SMALL_WIN;
                 }
             }
             return matchingRows;
@@ -53,17 +52,14 @@ namespace SlotMachine
         /// </summary>
         /// <param name="cols"></param>
         /// <param name="slotMachine"></param>
-        /// <param name="SMALL_WIN"></param>
-        /// <param name="balance"></param>
         /// <param name="matchingColumns"></param>
-        public static int CheckMatchingColumns(int cols, int[,] slotMachine, int matchingColumns, ref int balance, int SMALL_WIN)
+        public static int CheckMatchingColumns(int cols, int[,] slotMachine, int matchingColumns)
         {
             for (int j = 0; j < cols; j++)
             {
                 if (slotMachine[0, j] == slotMachine[1, j] && slotMachine[1, j] == slotMachine[2, j])
                 {
                     matchingColumns++;
-                    balance += SMALL_WIN;
                 }
             }
             return matchingColumns;
@@ -74,26 +70,50 @@ namespace SlotMachine
         /// </summary>
         /// <param name="diags"></param>
         /// <param name="slotMachine"></param>
-        /// <param name="SMALL_WIN"></param>
-        /// <param name="balance"></param>
         /// <param name="matchingDiagonals"></param>
-        public static int CheckMatchingDiagonals(int diags, int[,] slotMachine, int matchingDiagonals, ref int balance, int SMALL_WIN)
+        public static int CheckMatchingDiagonals(int diags, int[,] slotMachine, int matchingDiagonals)
         {
             for (int i = 0; i < diags; i++)
             {
                 if (i == 0 && slotMachine[0, 0] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[2, 2])
                 {
                     matchingDiagonals++;
-                    balance += SMALL_WIN;
-
                 }
                 else if (i == 1 && slotMachine[0, 2] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[2, 0])
                 {
                     matchingDiagonals++;
-                    balance += SMALL_WIN;
                 }
             }
             return matchingDiagonals;
+        }
+
+        /// <summary>
+        /// sets a small balance increase if there is a small win
+        /// </summary>
+        /// <param name="matchingRows"></param>
+        /// <param name="rows"></param>
+        /// <param name="matchingColumns"></param>
+        /// <param name="cols"></param>
+        /// <param name="matchingDiagonals"></param>
+        /// <param name="diags"></param>
+        /// <param name="balance"></param>
+        /// <param name="SMALL_WIN"></param>
+        public static void SmallBalanceIncrease(int matchingRows, int rows, int matchingColumns, int cols, int matchingDiagonals, ref int balance, int SMALL_WIN)
+        {
+            if (matchingRows > 0 && matchingRows < rows)
+            {
+                balance += SMALL_WIN;
+            }
+
+            if (matchingColumns > 0 && matchingColumns < cols)
+            {
+                balance += SMALL_WIN;
+            }
+
+            if (matchingDiagonals > 0)
+            {
+                balance += SMALL_WIN;
+            }
         }
 
         /// <summary>
@@ -106,7 +126,7 @@ namespace SlotMachine
         /// <param name="LARGE_WIN"></param>
         /// <param name="MEDIUM_WIN"></param>
         /// <param name="balance"></param>
-        public static void CheckBigWin(int matchingRows, int rows, int matchingColumns, int cols, int LARGE_WIN, int MEDIUM_WIN, ref int balance)
+        public static void CheckJackpotOrBigWin(int matchingRows, int rows, int matchingColumns, int cols, int LARGE_WIN, int MEDIUM_WIN, ref int balance)
         {
             if (matchingRows == rows && matchingColumns == cols)
             {
