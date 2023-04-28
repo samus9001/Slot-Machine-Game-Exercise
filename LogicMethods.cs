@@ -11,22 +11,55 @@ namespace SlotMachine
         /// <param name="amountRows"></param>
         /// <param name="MAX_NUMBER"></param>
         /// <returns></returns>
-        public static int[,] GenerateSlotMachineArray(int[,] slotMachine, int amountRows, int MAX_NUMBER)
+        public static int[,] GenerateRndGridAny(int[,] slotMachine, int amountRows, int MAX_NUMBER)
         {
             var rnd = new Random();
-            int index;
+            int randomNumber;
             int cols = slotMachine.GetLength(1);
 
             for (int i = 0; i < amountRows; i++)
             {
                 for (int j = 0; j < cols; j++)
                 {
-                    index = rnd.Next(MAX_NUMBER);
-                    slotMachine[i, j] = index;
+                    randomNumber = rnd.Next(MAX_NUMBER);
+                    slotMachine[i, j] = randomNumber;
                 }
             }
             return slotMachine;
         }
+        //public static int[,] GenerateSlotMachine3x3( int MAX_NUMBER)
+        //{
+        //    var rnd = new Random();
+        //    int randomNumber;
+        //    int[,] grid = new int[3, 3];
+
+        //    for (int i = 0; i < 3; i++)
+        //    {
+        //        for (int j = 0; j < 3; j++)
+        //        {
+        //            randomNumber = rnd.Next(MAX_NUMBER);
+        //            grid[i, j] = randomNumber;
+        //        }
+        //    }
+        //    return grid;
+        //}
+        //public static int[,] GenerateSlotMachineAny(int rowCnt, int colCnt, int MAX_NUMBER)
+        //{
+        //    var rnd = new Random();
+        //    int randomNumber;
+        //    int[,] grid = new int[rowCnt, colCnt];
+
+        //    for (int i = 0; i < rowCnt; i++)
+        //    {
+        //        for (int j = 0; j < colCnt; j++)
+        //        {
+        //            randomNumber = rnd.Next(MAX_NUMBER);
+        //            grid[i, j] = randomNumber;
+        //        }
+        //    }
+        //    return grid;
+        //}
+
 
         /// <summary>
         /// checks for matches on all rows
@@ -35,16 +68,18 @@ namespace SlotMachine
         /// <param name="slotMachine"></param>
         /// <param name="matchingRows"></param>
         /// <returns></returns>
-        public static int CheckMatchingRows(int amountRows, int[,] slotMachine, int matchingRows)
+        public static int CheckWinningRows(int amountRows, int[,] slotMachine)
         {
+            int winningRows = 0;
+
             for (int i = 0; i < amountRows; i++)
             {
                 if (slotMachine[i, 0] == slotMachine[i, 1] && slotMachine[i, 1] == slotMachine[i, 2])
                 {
-                    matchingRows++;
+                    winningRows++;
                 }
             }
-            return matchingRows;
+            return winningRows;
         }
 
         /// <summary>
@@ -52,17 +87,19 @@ namespace SlotMachine
         /// </summary>
         /// <param name="cols"></param>
         /// <param name="slotMachine"></param>
-        /// <param name="matchingColumns"></param>
-        public static int CheckMatchingColumns(int cols, int[,] slotMachine, int matchingColumns)
+        /// <param name="winningCols"></param>
+        public static int CheckWinningColumns(int amountRows, int[,] slotMachine)
         {
-            for (int j = 0; j < cols; j++)
+            int winningCols = 0;
+
+            for (int i = 0; i < amountRows; i++)
             {
-                if (slotMachine[0, j] == slotMachine[1, j] && slotMachine[1, j] == slotMachine[2, j])
+                if (slotMachine[0, i] == slotMachine[1, i] && slotMachine[1, i] == slotMachine[2, i])
                 {
-                    matchingColumns++;
+                    winningCols++;
                 }
             }
-            return matchingColumns;
+            return winningCols;
         }
 
         /// <summary>
@@ -70,54 +107,27 @@ namespace SlotMachine
         /// </summary>
         /// <param name="diags"></param>
         /// <param name="slotMachine"></param>
-        /// <param name="matchingDiagonals"></param>
-        public static int CheckMatchingDiagonals(int diags, int[,] slotMachine, int matchingDiagonals)
+        /// <param name="winningDiags"></param>
+        public static int CheckWinningDiags(int amountRows, int[,] slotMachine)
         {
-            for (int i = 0; i < diags; i++)
+            int winningDiags = 0;
+
+            for (int i = 0; i < amountRows; i++)
             {
                 if (i == 0 && slotMachine[0, 0] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[2, 2])
                 {
-                    matchingDiagonals++;
+                    winningDiags++;
                 }
                 else if (i == 1 && slotMachine[0, 2] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[2, 0])
                 {
-                    matchingDiagonals++;
+                    winningDiags++;
                 }
             }
-            return matchingDiagonals;
+            return winningDiags;
         }
 
         /// <summary>
-        /// sets a small balance increase if there is a small win
-        /// </summary>
-        /// <param name="matchingRows"></param>
-        /// <param name="rows"></param>
-        /// <param name="matchingColumns"></param>
-        /// <param name="cols"></param>
-        /// <param name="matchingDiagonals"></param>
-        /// <param name="diags"></param>
-        /// <param name="balance"></param>
-        /// <param name="SMALL_WIN"></param>
-        public static void SmallBalanceIncrease(int matchingRows, int rows, int matchingColumns, int cols, int matchingDiagonals, ref int balance, int SMALL_WIN)
-        {
-            if (matchingRows > 0 && matchingRows < rows)
-            {
-                balance += SMALL_WIN;
-            }
-
-            if (matchingColumns > 0 && matchingColumns < cols)
-            {
-                balance += SMALL_WIN;
-            }
-
-            if (matchingDiagonals > 0)
-            {
-                balance += SMALL_WIN;
-            }
-        }
-
-        /// <summary>
-        /// checks for Jackpot match or big win match
+        /// checks for jackpot match or big win match
         /// </summary>
         /// <param name="matchingRows"></param>
         /// <param name="rows"></param>
@@ -126,18 +136,38 @@ namespace SlotMachine
         /// <param name="LARGE_WIN"></param>
         /// <param name="MEDIUM_WIN"></param>
         /// <param name="balance"></param>
-        public static void CheckJackpotOrBigWin(int matchingRows, int rows, int matchingColumns, int cols, int LARGE_WIN, int MEDIUM_WIN, ref int balance)
+        public static int GrantWins(int matchingRows, int rows, int matchingColumns, int cols, int matchingDiagonals, int LARGE_WIN, int MEDIUM_WIN, int SMALL_WIN, int balance)
         {
+            int winnings = 0;
+
             if (matchingRows == rows && matchingColumns == cols)
             {
                 UIMethods.DisplayJackpotWin(LARGE_WIN);
-                balance += LARGE_WIN;
+                winnings += LARGE_WIN;
             }
             else if (matchingRows == rows || matchingColumns == cols)
             {
                 UIMethods.DisplayBigWin(MEDIUM_WIN);
-                balance += MEDIUM_WIN;
+                winnings += MEDIUM_WIN;
             }
+            else if (matchingRows > 0)
+            {
+                UIMethods.DisplayRowsWin(matchingRows, SMALL_WIN);
+                winnings += SMALL_WIN;
+            }
+            else if (matchingColumns > 0)
+            {
+                UIMethods.DisplayColumnsWin(matchingColumns, SMALL_WIN);
+                winnings += SMALL_WIN;
+            }
+            else if (matchingDiagonals > 0)
+            {
+                UIMethods.DisplayDiagonalsWin(matchingDiagonals, SMALL_WIN);
+                winnings += SMALL_WIN;
+            }
+
+            balance = balance + winnings;
+            return balance;
         }
     }
 }

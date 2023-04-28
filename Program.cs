@@ -2,14 +2,13 @@
 {
     internal class Program
     {
-        const int MAX_NUMBER = 10; // sets the range of values that can be generated to fill the array
+        const int MAX_NUMBER = 0; // sets the range of values that can be generated to fill the array
         const int MAX_LOSS = 5; // largest amount of balance that is lost
         const int SMALL_WIN = 50;
         const int MEDIUM_WIN = 500;
         const int LARGE_WIN = 1000;
         const int STARTING_BALANCE = 100;
         const int LOW_BALANCE = 5; // sets the limit on available lines depending on balance
-        const int diags = 2; // sets the amount of diagonals to check for matches
 
         static void Main(string[] args)
         {
@@ -27,10 +26,8 @@
 
             while (true)
             {
-                // counter variables used for checking for matches
-                int matchingRows = 0;
-                int matchingColumns = 0;
-                int matchingDiagonals = 0;
+                // used for setting the array length for one line
+                int amountRows = 1;
 
                 UIMethods.DisplayBalance(balance);
 
@@ -45,8 +42,9 @@
 
                 UIMethods.DisplayInstructions();
 
-                userInput = Char.ToUpper(Console.ReadKey().KeyChar);
-                Console.Clear();
+                userInput = UIMethods.Input();
+
+                UIMethods.ClearScreen();
 
                 // checks if input is out of bounds
                 bool validOption = (userInput == '1' || userInput == '3' || userInput == 'L');
@@ -69,33 +67,33 @@
                     return;
                 }
 
-                // used for setting the array length
-                int amountRows = 1;
-                int decreaseBalance = 1;
+                int decreaseBalanceForGameRound = 1;
 
                 if (userInput == '3')
                 {
                     amountRows = 3;
-                    decreaseBalance = MAX_LOSS;
+                    decreaseBalanceForGameRound = MAX_LOSS;
                 }
 
-                slotMachine = LogicMethods.GenerateSlotMachineArray(slotMachine, amountRows, MAX_NUMBER);
+                slotMachine = LogicMethods.GenerateRndGridAny(slotMachine, amountRows, MAX_NUMBER);
+                balance -= decreaseBalanceForGameRound;
                 UIMethods.DisplaySlotMachineArray(slotMachine, amountRows);
-                balance -= decreaseBalance;
 
-                matchingRows = LogicMethods.CheckMatchingRows(amountRows, slotMachine, matchingRows);
-                UIMethods.DisplayRowsMatch(matchingRows, SMALL_WIN);
-                LogicMethods.SmallBalanceIncrease(matchingRows, rows, matchingColumns, cols, matchingDiagonals, ref balance, SMALL_WIN);
+                // counter variables used for checking for matches
+                int matchingRows = LogicMethods.CheckWinningRows(amountRows, slotMachine);
+                int matchingColumns = LogicMethods.CheckWinningColumns(amountRows, slotMachine);
+                int matchingDiagonals = LogicMethods.CheckWinningDiags(amountRows, slotMachine);
+
+                matchingRows = LogicMethods.CheckWinningRows(amountRows, slotMachine);
+                LogicMethods.GrantWins(matchingRows, rows, matchingColumns, cols, matchingDiagonals, LARGE_WIN, MEDIUM_WIN, SMALL_WIN, balance);
 
                 if (amountRows == 3)
                 {
-                    matchingColumns = LogicMethods.CheckMatchingColumns(cols, slotMachine, matchingColumns);
-                    UIMethods.DisplayColumnsMatch(matchingColumns, SMALL_WIN);
+                    matchingColumns = LogicMethods.CheckWinningColumns(amountRows, slotMachine);
 
-                    matchingDiagonals = LogicMethods.CheckMatchingDiagonals(diags, slotMachine, matchingDiagonals);
-                    UIMethods.DisplayDiagonalsMatch(matchingDiagonals, SMALL_WIN);
+                    matchingDiagonals = LogicMethods.CheckWinningDiags(amountRows, slotMachine);
 
-                    LogicMethods.CheckJackpotOrBigWin(matchingRows, rows, matchingColumns, cols, LARGE_WIN, MEDIUM_WIN, ref balance);
+                    balance = LogicMethods.GrantWins(matchingRows, rows, matchingColumns, cols, matchingDiagonals, LARGE_WIN, MEDIUM_WIN, SMALL_WIN, balance);
                 }
 
                 // checks if the game is over
@@ -103,12 +101,12 @@
                 {
                     UIMethods.DisplayGameOver();
 
-                    var key = Console.ReadKey().Key;
+                    bool restartGame = UIMethods.RestartGame();
 
-                    if (key == ConsoleKey.Y)
+                    if (restartGame)
                     {
                         balance = STARTING_BALANCE;
-                        Console.Clear();
+                        UIMethods.ClearScreen();
                     }
                     else
                     {
