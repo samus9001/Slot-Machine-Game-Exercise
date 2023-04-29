@@ -2,7 +2,7 @@
 {
     internal class Program
     {
-        const int MAX_NUMBER = 10; // sets the range of values that can be generated to fill the array
+        const int MAX_NUMBER = 3; // sets the range of values that can be generated to fill the array
         const int MAX_LOSS = 5; // largest amount of balance that is lost
         const int SMALL_WIN = 50;
         const int MEDIUM_WIN = 500;

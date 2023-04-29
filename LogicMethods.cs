@@ -139,31 +139,40 @@ namespace SlotMachine
         public static int GrantWins(int matchingRows, int rows, int matchingColumns, int cols, int matchingDiagonals, int LARGE_WIN, int MEDIUM_WIN, int SMALL_WIN, int balance)
         {
             int winnings = 0;
+            bool jackpotWin = false;
+            bool bigWin = false;
 
             if (matchingRows == rows && matchingColumns == cols)
             {
                 UIMethods.DisplayJackpotWin(LARGE_WIN);
                 winnings += LARGE_WIN;
+                jackpotWin = true;
             }
-            else if (matchingRows == rows || matchingColumns == cols)
+
+            if (!jackpotWin && (matchingRows == rows || matchingColumns == cols))
             {
                 UIMethods.DisplayBigWin(MEDIUM_WIN);
                 winnings += MEDIUM_WIN;
+                bigWin = true;
             }
-            else if (matchingRows > 0)
+
+            if (!jackpotWin && !bigWin)
             {
-                UIMethods.DisplayRowsWin(matchingRows, SMALL_WIN);
-                winnings += SMALL_WIN;
-            }
-            else if (matchingColumns > 0)
-            {
-                UIMethods.DisplayColumnsWin(matchingColumns, SMALL_WIN);
-                winnings += SMALL_WIN;
-            }
-            else if (matchingDiagonals > 0)
-            {
-                UIMethods.DisplayDiagonalsWin(matchingDiagonals, SMALL_WIN);
-                winnings += SMALL_WIN;
+                if (matchingRows > 0)
+                {
+                    UIMethods.DisplayRowsWin(matchingRows, SMALL_WIN);
+                    winnings += matchingRows * SMALL_WIN;
+                }
+                if (matchingColumns > 0)
+                {
+                    UIMethods.DisplayColumnsWin(matchingColumns, SMALL_WIN);
+                    winnings += matchingColumns * SMALL_WIN;
+                }
+                if (matchingDiagonals > 0)
+                {
+                    UIMethods.DisplayDiagonalsWin(matchingDiagonals, SMALL_WIN);
+                    winnings += matchingDiagonals * SMALL_WIN;
+                }
             }
 
             balance = balance + winnings;
