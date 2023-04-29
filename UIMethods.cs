@@ -136,7 +136,8 @@ namespace SlotMachine
         {
             for (int i = 0; i < matchingRows; i++)
             {
-                Console.WriteLine($"\nYOU HIT A ROW MATCH! YOU WIN ${SMALL_WIN}!\n\n");
+                //Console.WriteLine($"\nYOU HIT A ROW MATCH! YOU WIN ${SMALL_WIN}!\n\n");
+                Console.WriteLine($"\nYOU HIT A MATCH ON ROW {i + 1}! YOU WIN ${SMALL_WIN}!\n\n");
             }
         }
 
@@ -147,9 +148,10 @@ namespace SlotMachine
         /// <param name="SMALL_WIN"></param>
         public static void DisplayColumnsWin(int matchingColumns, int SMALL_WIN)
         {
-            for (int j = 0; j < matchingColumns; j++)
+            for (int i = 0; i < matchingColumns; i++)
             {
-                Console.WriteLine($"\nYOU HIT A COLUMN MATCH! YOU WIN ${SMALL_WIN}!\n\n");
+                //Console.WriteLine($"\nYOU HIT A COLUMN MATCH! YOU WIN ${SMALL_WIN}!\n\n");
+                Console.WriteLine($"\nYOU HIT A MATCH ON COLUMN {i + 1}! YOU WIN ${SMALL_WIN}!\n\n");
             }
         }
 
@@ -160,9 +162,10 @@ namespace SlotMachine
         /// <param name="SMALL_WIN"></param>
         public static void DisplayDiagonalsWin(int matchingDiagonals, int SMALL_WIN)
         {
-            for (int k = 0; k < matchingDiagonals; k++)
+            for (int i = 0; i < matchingDiagonals; i++)
             {
-                Console.WriteLine($"\nYOU HIT A DIAGONAL MATCH! YOU WIN ${SMALL_WIN}!\n\n");
+                //Console.WriteLine($"\nYOU HIT A DIAGONAL MATCH! YOU WIN ${SMALL_WIN}!\n\n");
+                Console.WriteLine($"\nYOU HIT A MATCH ON DIAGONAL {i + 1}! YOU WIN ${SMALL_WIN}!\n\n");
             }
         }
 

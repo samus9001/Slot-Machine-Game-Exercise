@@ -2,7 +2,7 @@
 {
     internal class Program
     {
-        const int MAX_NUMBER = 3; // sets the range of values that can be generated to fill the array
+        const int MAX_NUMBER = 10; // sets the range of values that can be generated to fill the array
         const int MAX_LOSS = 5; // largest amount of balance that is lost
         const int SMALL_WIN = 50;
         const int MEDIUM_WIN = 500;
@@ -85,16 +85,15 @@
                 int matchingDiagonals = LogicMethods.CheckWinningDiags(amountRows, slotMachine);
 
                 matchingRows = LogicMethods.CheckWinningRows(amountRows, slotMachine);
-                LogicMethods.GrantWins(matchingRows, rows, matchingColumns, cols, matchingDiagonals, LARGE_WIN, MEDIUM_WIN, SMALL_WIN, balance);
 
                 if (amountRows == 3)
                 {
                     matchingColumns = LogicMethods.CheckWinningColumns(amountRows, slotMachine);
 
                     matchingDiagonals = LogicMethods.CheckWinningDiags(amountRows, slotMachine);
-
-                    balance = LogicMethods.GrantWins(matchingRows, rows, matchingColumns, cols, matchingDiagonals, LARGE_WIN, MEDIUM_WIN, SMALL_WIN, balance);
                 }
+                
+                balance = LogicMethods.GrantWins(matchingRows, rows, matchingColumns, cols, matchingDiagonals, LARGE_WIN, MEDIUM_WIN, SMALL_WIN, balance);
 
                 // checks if the game is over
                 if (balance <= 0)
