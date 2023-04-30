@@ -114,7 +114,7 @@ namespace SlotMachine
         /// <param name="LARGE_WIN"></param>
         public static void DisplayJackpotWin(int LARGE_WIN)
         {
-            Console.WriteLine($"\nJACKPOT!!! YOU WIN ${LARGE_WIN}!\n\n");
+            Console.WriteLine($"\nJACKPOT!!! YOU WIN ${LARGE_WIN}!\n");
         }
 
         /// <summary>
@@ -123,7 +123,7 @@ namespace SlotMachine
         /// <param name="MEDIUM_WIN"></param>
         public static void DisplayBigWin(int MEDIUM_WIN)
         {
-            Console.WriteLine($"\nYOU HIT A BIG WIN!! YOU WIN ${MEDIUM_WIN}!\n\n");
+            Console.WriteLine($"\nYOU HIT A BIG WIN!! YOU WIN ${MEDIUM_WIN}!\n");
         }
 
         /// <summary>
@@ -134,12 +134,29 @@ namespace SlotMachine
         /// <param name="balance"></param>
         public static void DisplayRowsWin(int matchingRows, int SMALL_WIN)
         {
-            for (int i = 0; i < matchingRows; i++)
+            for (int row = 0; row < matchingRows; row++)
             {
-                //Console.WriteLine($"\nYOU HIT A ROW MATCH! YOU WIN ${SMALL_WIN}!\n\n");
-                Console.WriteLine($"\nYOU HIT A MATCH ON ROW {i + 1}! YOU WIN ${SMALL_WIN}!\n\n");
+                Console.WriteLine($"\nYOU HIT A MATCH ON ROW {row + 1}! YOU WIN ${SMALL_WIN}!\n");
             }
         }
+
+        public static void DisplayRowsWin(List<int> matchingRows, int SMALL_WIN)
+        {
+            if (matchingRows.Count > 0)
+            {
+                Console.Write("YOU HIT A MATCH ON ROW");
+                for (int i = 0; i < matchingRows.Count; i++)
+                {
+                    Console.Write($" {matchingRows[i]}");
+                    if (i < matchingRows.Count - 1)
+                    {
+                        Console.Write(" AND");
+                    }
+                }
+                Console.WriteLine($"! YOU WIN ${matchingRows.Count * SMALL_WIN}!\n\n");
+            }
+        }
+
 
         /// <summary>
         /// sets the UI message when there is a match on the columns
@@ -148,10 +165,9 @@ namespace SlotMachine
         /// <param name="SMALL_WIN"></param>
         public static void DisplayColumnsWin(int matchingColumns, int SMALL_WIN)
         {
-            for (int i = 0; i < matchingColumns; i++)
+            for (int col = 0; col < matchingColumns; col++)
             {
-                //Console.WriteLine($"\nYOU HIT A COLUMN MATCH! YOU WIN ${SMALL_WIN}!\n\n");
-                Console.WriteLine($"\nYOU HIT A MATCH ON COLUMN {i + 1}! YOU WIN ${SMALL_WIN}!\n\n");
+                Console.WriteLine($"\nYOU HIT A MATCH ON COLUMN {col + 1}! YOU WIN ${SMALL_WIN}!\n");
             }
         }
 
@@ -161,12 +177,20 @@ namespace SlotMachine
         /// <param name="matchingDiagonals"></param>
         /// <param name="SMALL_WIN"></param>
         public static void DisplayDiagonalsWin(int matchingDiagonals, int SMALL_WIN)
-        {
-            for (int i = 0; i < matchingDiagonals; i++)
+        { 
+            for (int diag = 0; diag < matchingDiagonals; diag++)
             {
-                //Console.WriteLine($"\nYOU HIT A DIAGONAL MATCH! YOU WIN ${SMALL_WIN}!\n\n");
-                Console.WriteLine($"\nYOU HIT A MATCH ON DIAGONAL {i + 1}! YOU WIN ${SMALL_WIN}!\n\n");
+                Console.WriteLine($"\nYOU HIT A MATCH ON DIAGONAL {diag + 1}! YOU WIN ${SMALL_WIN}!\n");
             }
+        }
+
+        /// <summary>
+        /// sets the UI message to show the total amount won each round
+        /// </summary>
+        /// <param name="winnings"></param>
+        public static void DisplayTotalWin(int winnings)
+        {
+            Console.WriteLine($"\nTOTAL WIN = ${winnings}\n\n\n");
         }
 
         /// <summary>

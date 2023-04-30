@@ -1,4 +1,6 @@
-﻿namespace SlotMachine
+﻿using System;
+
+namespace SlotMachine
 {
     internal class Program
     {

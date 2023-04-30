@@ -70,16 +70,31 @@ namespace SlotMachine
         /// <returns></returns>
         public static int CheckWinningRows(int amountRows, int[,] slotMachine)
         {
-            int winningRows = 0;
+            int matchingRows = 0;
+
+            List<int> winningRows = new List<int>();
 
             for (int i = 0; i < amountRows; i++)
             {
-                if (slotMachine[i, 0] == slotMachine[i, 1] && slotMachine[i, 1] == slotMachine[i, 2])
+                int first = slotMachine[i, 0];
+
+                bool match = true;
+                for (int j = 1; j < slotMachine.GetLength(1); j++)
                 {
-                    winningRows++;
+                    if (slotMachine[i, j] != first)
+                    {
+                        match = false;
+                        break;
+                    }
+                }
+
+                if (match)
+                {
+                    winningRows.Add(i + 1);
                 }
             }
-            return winningRows;
+
+            return matchingRows;
         }
 
         /// <summary>
@@ -160,8 +175,8 @@ namespace SlotMachine
             {
                 if (matchingRows > 0)
                 {
-                    UIMethods.DisplayRowsWin(matchingRows, SMALL_WIN);
                     winnings += matchingRows * SMALL_WIN;
+                    UIMethods.DisplayRowsWin(matchingRows, SMALL_WIN);
                 }
                 if (matchingColumns > 0)
                 {
@@ -173,6 +188,11 @@ namespace SlotMachine
                     UIMethods.DisplayDiagonalsWin(matchingDiagonals, SMALL_WIN);
                     winnings += matchingDiagonals * SMALL_WIN;
                 }
+            }
+
+            if (winnings > 0) 
+            {
+                UIMethods.DisplayTotalWin(winnings);
             }
 
             balance = balance + winnings;
