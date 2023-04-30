@@ -28,8 +28,12 @@ namespace SlotMachine
 
             while (true)
             {
-                // used for setting the array length for one line
-                int amountRows = 1;
+                // used for setting the array length to one line by default
+                int rowCnt = 1;
+                int colCnt = 3;
+
+                // used for setting the array length to three lines
+                int grid3x3 = 3;
 
                 UIMethods.DisplayBalance(balance);
 
@@ -73,26 +77,26 @@ namespace SlotMachine
 
                 if (userInput == '3')
                 {
-                    amountRows = 3;
+                    rowCnt = grid3x3;
                     decreaseBalanceForGameRound = MAX_LOSS;
                 }
 
-                slotMachine = LogicMethods.GenerateRndGridAny(slotMachine, amountRows, MAX_NUMBER);
+                slotMachine = LogicMethods.GenerateSlotMachineAny(rowCnt, colCnt, MAX_NUMBER);
                 balance -= decreaseBalanceForGameRound;
-                UIMethods.DisplaySlotMachineArray(slotMachine, amountRows);
+                UIMethods.DisplaySlotMachineArray(slotMachine, rowCnt);
 
                 // counter variables used for checking for matches
-                int matchingRows = LogicMethods.CheckWinningRows(amountRows, slotMachine);
-                int matchingColumns = LogicMethods.CheckWinningColumns(amountRows, slotMachine);
-                int matchingDiagonals = LogicMethods.CheckWinningDiags(amountRows, slotMachine);
+                int matchingRows = LogicMethods.CheckWinningRows(rowCnt, slotMachine);
+                int matchingColumns = LogicMethods.CheckWinningColumns(rowCnt, grid3x3, slotMachine);
+                int matchingDiagonals = LogicMethods.CheckWinningDiags(rowCnt, grid3x3, slotMachine);
 
-                matchingRows = LogicMethods.CheckWinningRows(amountRows, slotMachine);
+                matchingRows = LogicMethods.CheckWinningRows(rowCnt, slotMachine);
 
-                if (amountRows == 3)
+                if (rowCnt == 3)
                 {
-                    matchingColumns = LogicMethods.CheckWinningColumns(amountRows, slotMachine);
+                    matchingColumns = LogicMethods.CheckWinningColumns(rowCnt, grid3x3, slotMachine);
 
-                    matchingDiagonals = LogicMethods.CheckWinningDiags(amountRows, slotMachine);
+                    matchingDiagonals = LogicMethods.CheckWinningDiags(rowCnt, grid3x3, slotMachine);
                 }
                 
                 balance = LogicMethods.GrantWins(matchingRows, rows, matchingColumns, cols, matchingDiagonals, LARGE_WIN, MEDIUM_WIN, SMALL_WIN, balance);

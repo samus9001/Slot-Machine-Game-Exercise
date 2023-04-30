@@ -7,94 +7,46 @@ namespace SlotMachine
         /// <summary>
         /// generates SlotMachine array values based on amount of lines played
         /// </summary>
-        /// <param name="slotMachine"></param>
-        /// <param name="amountRows"></param>
+        /// <param name="rowCnt"></param>
+        /// <param name="colCnt"></param>
         /// <param name="MAX_NUMBER"></param>
         /// <returns></returns>
-        public static int[,] GenerateRndGridAny(int[,] slotMachine, int amountRows, int MAX_NUMBER)
+        public static int[,] GenerateSlotMachineAny(int rowCnt, int colCnt, int MAX_NUMBER)
         {
             var rnd = new Random();
             int randomNumber;
-            int cols = slotMachine.GetLength(1);
+            int[,] grid = new int[rowCnt, colCnt];
 
-            for (int i = 0; i < amountRows; i++)
+            for (int i = 0; i < rowCnt; i++)
             {
-                for (int j = 0; j < cols; j++)
+                for (int j = 0; j < colCnt; j++)
                 {
                     randomNumber = rnd.Next(MAX_NUMBER);
-                    slotMachine[i, j] = randomNumber;
+                    grid[i, j] = randomNumber;
                 }
             }
-            return slotMachine;
+            return grid;
         }
-        //public static int[,] GenerateSlotMachine3x3( int MAX_NUMBER)
-        //{
-        //    var rnd = new Random();
-        //    int randomNumber;
-        //    int[,] grid = new int[3, 3];
-
-        //    for (int i = 0; i < 3; i++)
-        //    {
-        //        for (int j = 0; j < 3; j++)
-        //        {
-        //            randomNumber = rnd.Next(MAX_NUMBER);
-        //            grid[i, j] = randomNumber;
-        //        }
-        //    }
-        //    return grid;
-        //}
-        //public static int[,] GenerateSlotMachineAny(int rowCnt, int colCnt, int MAX_NUMBER)
-        //{
-        //    var rnd = new Random();
-        //    int randomNumber;
-        //    int[,] grid = new int[rowCnt, colCnt];
-
-        //    for (int i = 0; i < rowCnt; i++)
-        //    {
-        //        for (int j = 0; j < colCnt; j++)
-        //        {
-        //            randomNumber = rnd.Next(MAX_NUMBER);
-        //            grid[i, j] = randomNumber;
-        //        }
-        //    }
-        //    return grid;
-        //}
-
 
         /// <summary>
         /// checks for matches on all rows
         /// </summary>
-        /// <param name="amountRows"></param>
+        /// <param name="rowCnt"></param>
         /// <param name="slotMachine"></param>
         /// <param name="matchingRows"></param>
         /// <returns></returns>
-        public static int CheckWinningRows(int amountRows, int[,] slotMachine)
+        public static int CheckWinningRows(int rowCnt, int[,] slotMachine)
         {
-            int matchingRows = 0;
+            int winningRows = 0;
 
-            List<int> winningRows = new List<int>();
-
-            for (int i = 0; i < amountRows; i++)
+            for (int i = 0; i < rowCnt; i++)
             {
-                int first = slotMachine[i, 0];
-
-                bool match = true;
-                for (int j = 1; j < slotMachine.GetLength(1); j++)
+                if (slotMachine[i, 0] == slotMachine[i, 1] && slotMachine[i, 1] == slotMachine[i, 2])
                 {
-                    if (slotMachine[i, j] != first)
-                    {
-                        match = false;
-                        break;
-                    }
-                }
-
-                if (match)
-                {
-                    winningRows.Add(i + 1);
+                    winningRows++;
                 }
             }
-
-            return matchingRows;
+            return winningRows;
         }
 
         /// <summary>
@@ -103,15 +55,18 @@ namespace SlotMachine
         /// <param name="cols"></param>
         /// <param name="slotMachine"></param>
         /// <param name="winningCols"></param>
-        public static int CheckWinningColumns(int amountRows, int[,] slotMachine)
+        public static int CheckWinningColumns(int rowCnt, int grid3x3, int[,] slotMachine)
         {
             int winningCols = 0;
 
-            for (int i = 0; i < amountRows; i++)
+            if (rowCnt == grid3x3)
             {
-                if (slotMachine[0, i] == slotMachine[1, i] && slotMachine[1, i] == slotMachine[2, i])
+                for (int i = 0; i < rowCnt; i++)
                 {
-                    winningCols++;
+                    if (slotMachine[0, i] == slotMachine[1, i] && slotMachine[1, i] == slotMachine[2, i])
+                    {
+                        winningCols++;
+                    }
                 }
             }
             return winningCols;
@@ -123,19 +78,22 @@ namespace SlotMachine
         /// <param name="diags"></param>
         /// <param name="slotMachine"></param>
         /// <param name="winningDiags"></param>
-        public static int CheckWinningDiags(int amountRows, int[,] slotMachine)
+        public static int CheckWinningDiags(int rowCnt, int grid3x3, int[,] slotMachine)
         {
             int winningDiags = 0;
 
-            for (int i = 0; i < amountRows; i++)
+            if (rowCnt == grid3x3)
             {
-                if (i == 0 && slotMachine[0, 0] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[2, 2])
+                for (int i = 0; i < rowCnt; i++)
                 {
-                    winningDiags++;
-                }
-                else if (i == 1 && slotMachine[0, 2] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[2, 0])
-                {
-                    winningDiags++;
+                    if (i == 0 && slotMachine[0, 0] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[2, 2])
+                    {
+                        winningDiags++;
+                    }
+                    else if (i == 1 && slotMachine[0, 2] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[2, 0])
+                    {
+                        winningDiags++;
+                    }
                 }
             }
             return winningDiags;
@@ -190,7 +148,7 @@ namespace SlotMachine
                 }
             }
 
-            if (winnings > 0) 
+            if (winnings > 0)
             {
                 UIMethods.DisplayTotalWin(winnings);
             }

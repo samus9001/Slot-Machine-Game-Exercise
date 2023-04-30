@@ -93,12 +93,12 @@ namespace SlotMachine
         /// sets the UI to display the SlotMachine array
         /// </summary>
         /// <param name="slotMachine"></param>
-        /// <param name="amountRows"></param>
-        public static void DisplaySlotMachineArray(int[,] slotMachine, int amountRows)
+        /// <param name="rowCnt"></param>
+        public static void DisplaySlotMachineArray(int[,] slotMachine, int rowCnt)
         {
             int cols = slotMachine.GetLength(1);
 
-            for (int i = 0; i < amountRows; i++)
+            for (int i = 0; i < rowCnt; i++)
             {
                 for (int j = 0; j < cols; j++)
                 {
