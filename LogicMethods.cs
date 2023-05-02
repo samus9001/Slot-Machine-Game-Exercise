@@ -5,7 +5,7 @@ namespace SlotMachine
     public static class LogicMethods
     {
         /// <summary>
-        /// generates SlotMachine array values based on amount of lines played
+        /// generates either a 3x1 or 3x3 array with random values between 0-9 based on amount of lines played
         /// </summary>
         /// <param name="rowCnt"></param>
         /// <param name="colCnt"></param>
@@ -17,112 +17,139 @@ namespace SlotMachine
             int randomNumber;
             int[,] grid = new int[rowCnt, colCnt];
 
-            for (int i = 0; i < rowCnt; i++)
+            for (int row = 0; row < rowCnt; row++)
             {
-                for (int j = 0; j < colCnt; j++)
+                for (int col = 0; col < colCnt; col++)
                 {
                     randomNumber = rnd.Next(MAX_NUMBER);
-                    grid[i, j] = randomNumber;
+                    grid[row, col] = randomNumber;
                 }
             }
             return grid;
         }
 
         /// <summary>
-        /// checks for matches on all rows
+        /// checks for matches on each row and stores each row number in a list
         /// </summary>
         /// <param name="rowCnt"></param>
         /// <param name="slotMachine"></param>
-        /// <param name="matchingRows"></param>
         /// <returns></returns>
-        public static int CheckWinningRows(int rowCnt, int[,] slotMachine)
+        public static List<int> CheckWinningRows(int rowCnt, int[,] slotMachine)
         {
-            int winningRows = 0;
+            List<int> winningRows = new List<int>();
 
-            for (int i = 0; i < rowCnt; i++)
+            for (int row = 0; row < rowCnt; row++)
             {
-                if (slotMachine[i, 0] == slotMachine[i, 1] && slotMachine[i, 1] == slotMachine[i, 2])
+                int first = slotMachine[row, 0];
+
+                bool match = true;
+
+                for (int col = 1; col < slotMachine.GetLength(1); col++)
                 {
-                    winningRows++;
+                    if (slotMachine[row, col] != first)
+                    {
+                        match = false;
+                        break;
+                    }
+                }
+
+                if (match)
+                {
+                    winningRows.Add(row + 1);
                 }
             }
             return winningRows;
         }
 
         /// <summary>
-        /// checks for matches on all columns
+        /// checks for matches on each column and stores each column number in a list
         /// </summary>
-        /// <param name="cols"></param>
+        /// <param name="rowCnt"></param>
         /// <param name="slotMachine"></param>
-        /// <param name="winningCols"></param>
-        public static int CheckWinningColumns(int rowCnt, int grid3x3, int[,] slotMachine)
+        /// <returns></returns>
+        public static List<int> CheckWinningCols(int rowCnt, int[,] slotMachine)
         {
-            int winningCols = 0;
+            List<int> winningCols = new List<int>();
 
-            if (rowCnt == grid3x3)
+            for (int col = 0; col < slotMachine.GetLength(1); col++)
             {
-                for (int i = 0; i < rowCnt; i++)
+                int first = slotMachine[0, col];
+
+                bool match = true;
+
+                for (int row = 1; row < rowCnt; row++)
                 {
-                    if (slotMachine[0, i] == slotMachine[1, i] && slotMachine[1, i] == slotMachine[2, i])
+                    if (slotMachine[row, col] != first)
                     {
-                        winningCols++;
+                        match = false;
+                        break;
                     }
+                }
+
+                if (match)
+                {
+                    winningCols.Add(col + 1);
                 }
             }
             return winningCols;
         }
 
         /// <summary>
-        /// checks for matches on all diagonals
+        /// checks for matches on each diagonal and stores each diagonal number in a list
         /// </summary>
-        /// <param name="diags"></param>
+        /// <param name="rowCnt"></param>
+        /// <param name="grid3x3"></param>
         /// <param name="slotMachine"></param>
-        /// <param name="winningDiags"></param>
-        public static int CheckWinningDiags(int rowCnt, int grid3x3, int[,] slotMachine)
+        /// <returns></returns>
+        public static List<int> CheckWinningDiags(int rowCnt, int grid3x3, int[,] slotMachine)
         {
-            int winningDiags = 0;
+            List<int> winningDiags = new List<int>();
 
             if (rowCnt == grid3x3)
             {
-                for (int i = 0; i < rowCnt; i++)
+                if (slotMachine[0, 0] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[2, 2])
                 {
-                    if (i == 0 && slotMachine[0, 0] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[2, 2])
-                    {
-                        winningDiags++;
-                    }
-                    else if (i == 1 && slotMachine[0, 2] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[2, 0])
-                    {
-                        winningDiags++;
-                    }
+                    winningDiags.Add(1);
+                }
+                if (slotMachine[0, 2] == slotMachine[1, 1] && slotMachine[1, 1] == slotMachine[2, 0])
+                {
+                    winningDiags.Add(2);
                 }
             }
             return winningDiags;
         }
 
         /// <summary>
-        /// checks for jackpot match or big win match
+        /// checks for all matches and displays them if present then updates the balance
         /// </summary>
-        /// <param name="matchingRows"></param>
+        /// <param name="rowCnt"></param>
+        /// <param name="slotMachine"></param>
+        /// <param name="grid3x3"></param>
         /// <param name="rows"></param>
-        /// <param name="matchingColumns"></param>
         /// <param name="cols"></param>
         /// <param name="LARGE_WIN"></param>
         /// <param name="MEDIUM_WIN"></param>
+        /// <param name="SMALL_WIN"></param>
         /// <param name="balance"></param>
-        public static int GrantWins(int matchingRows, int rows, int matchingColumns, int cols, int matchingDiagonals, int LARGE_WIN, int MEDIUM_WIN, int SMALL_WIN, int balance)
+        /// <returns></returns>
+        public static int GrantWins(int rowCnt, int[,] slotMachine, int grid3x3, int rows, int cols, int LARGE_WIN, int MEDIUM_WIN, int SMALL_WIN, int balance)
         {
             int winnings = 0;
             bool jackpotWin = false;
             bool bigWin = false;
 
-            if (matchingRows == rows && matchingColumns == cols)
+            List<int> matchingRows = LogicMethods.CheckWinningRows(rowCnt, slotMachine);
+            List<int> matchingColumns = LogicMethods.CheckWinningCols(rowCnt, slotMachine);
+            List<int> matchingDiagonals = LogicMethods.CheckWinningDiags(rowCnt, grid3x3, slotMachine);
+
+            if (matchingRows.Count == rows && matchingColumns.Count == cols)
             {
                 UIMethods.DisplayJackpotWin(LARGE_WIN);
                 winnings += LARGE_WIN;
                 jackpotWin = true;
             }
 
-            if (!jackpotWin && (matchingRows == rows || matchingColumns == cols))
+            if (!jackpotWin && (matchingRows.Count == rows || matchingColumns.Count == cols))
             {
                 UIMethods.DisplayBigWin(MEDIUM_WIN);
                 winnings += MEDIUM_WIN;
@@ -131,20 +158,20 @@ namespace SlotMachine
 
             if (!jackpotWin && !bigWin)
             {
-                if (matchingRows > 0)
+                if (matchingRows.Count > 0)
                 {
-                    winnings += matchingRows * SMALL_WIN;
-                    UIMethods.DisplayRowsWin(matchingRows, SMALL_WIN);
+                    winnings += matchingRows.Count * SMALL_WIN;
+                    UIMethods.DisplayRowsWin(matchingRows);
                 }
-                if (matchingColumns > 0)
+                if (matchingColumns.Count > 0)
                 {
-                    UIMethods.DisplayColumnsWin(matchingColumns, SMALL_WIN);
-                    winnings += matchingColumns * SMALL_WIN;
+                    winnings += matchingColumns.Count * SMALL_WIN;
+                    UIMethods.DisplayColumnsWin(matchingColumns);
                 }
-                if (matchingDiagonals > 0)
+                if (matchingDiagonals.Count > 0)
                 {
-                    UIMethods.DisplayDiagonalsWin(matchingDiagonals, SMALL_WIN);
-                    winnings += matchingDiagonals * SMALL_WIN;
+                    winnings += matchingDiagonals.Count * SMALL_WIN;
+                    UIMethods.DisplayDiagonalsWin(matchingDiagonals);
                 }
             }
 

@@ -26,7 +26,7 @@ namespace SlotMachine
         /// clears the screen when the game starts
         /// </summary>
         public static void ClearScreen()
-        { 
+        {
             Console.Clear();
         }
 
@@ -36,7 +36,7 @@ namespace SlotMachine
         /// <param name="balance"></param>
         public static void DisplayBalance(int balance)
         {
-            Console.WriteLine($"BALANCE = ${balance}\n\n");
+            Console.WriteLine($"\nBALANCE = ${balance}\n\n");
         }
 
         /// <summary>
@@ -98,11 +98,11 @@ namespace SlotMachine
         {
             int cols = slotMachine.GetLength(1);
 
-            for (int i = 0; i < rowCnt; i++)
+            for (int row = 0; row < rowCnt; row++)
             {
-                for (int j = 0; j < cols; j++)
+                for (int col = 0; col < cols; col++)
                 {
-                    Console.Write(slotMachine[i, j] + " ");
+                    Console.Write(slotMachine[row, col] + " ");
                 }
                 Console.WriteLine("\n");
             }
@@ -130,44 +130,39 @@ namespace SlotMachine
         /// sets the UI message when there is a match on the rows
         /// </summary>
         /// <param name="matchingRows"></param>
-        /// <param name="SMALL_WIN"></param>
-        /// <param name="balance"></param>
-        public static void DisplayRowsWin(int matchingRows, int SMALL_WIN)
-        {
-            for (int row = 0; row < matchingRows; row++)
-            {
-                Console.WriteLine($"\nYOU HIT A MATCH ON ROW {row + 1}! YOU WIN ${SMALL_WIN}!\n");
-            }
-        }
-
-        public static void DisplayRowsWin(List<int> matchingRows, int SMALL_WIN)
+        public static void DisplayRowsWin(List<int> matchingRows)
         {
             if (matchingRows.Count > 0)
             {
-                Console.Write("YOU HIT A MATCH ON ROW");
-                for (int i = 0; i < matchingRows.Count; i++)
+                Console.Write("\nYOU HIT A MATCH ON ROW");
+                for (int row = 0; row < matchingRows.Count; row++)
                 {
-                    Console.Write($" {matchingRows[i]}");
-                    if (i < matchingRows.Count - 1)
+                    Console.Write($" {matchingRows[row]}");
+                    if (row < matchingRows.Count - 1)
                     {
                         Console.Write(" AND");
                     }
                 }
-                Console.WriteLine($"! YOU WIN ${matchingRows.Count * SMALL_WIN}!\n\n");
             }
         }
-
 
         /// <summary>
         /// sets the UI message when there is a match on the columns
         /// </summary>
         /// <param name="matchingColumns"></param>
-        /// <param name="SMALL_WIN"></param>
-        public static void DisplayColumnsWin(int matchingColumns, int SMALL_WIN)
+        public static void DisplayColumnsWin(List<int> matchingColumns)
         {
-            for (int col = 0; col < matchingColumns; col++)
+            if (matchingColumns.Count > 0)
             {
-                Console.WriteLine($"\nYOU HIT A MATCH ON COLUMN {col + 1}! YOU WIN ${SMALL_WIN}!\n");
+                Console.Write("\nYOU HIT A MATCH ON COLUMN");
+                for (int col = 0; col < matchingColumns.Count; col++)
+                {
+                    Console.Write($" {matchingColumns[col]}");
+                    if (col < matchingColumns.Count - 1)
+                    {
+                        Console.Write(" AND");
+                    }
+                }
             }
         }
 
@@ -175,12 +170,19 @@ namespace SlotMachine
         /// sets the UI message when there is a match on the diagonals
         /// </summary>
         /// <param name="matchingDiagonals"></param>
-        /// <param name="SMALL_WIN"></param>
-        public static void DisplayDiagonalsWin(int matchingDiagonals, int SMALL_WIN)
-        { 
-            for (int diag = 0; diag < matchingDiagonals; diag++)
+        public static void DisplayDiagonalsWin(List<int> matchingDiagonals)
+        {
+            if (matchingDiagonals.Count > 0)
             {
-                Console.WriteLine($"\nYOU HIT A MATCH ON DIAGONAL {diag + 1}! YOU WIN ${SMALL_WIN}!\n");
+                Console.Write("\nYOU HIT A MATCH ON DIAGONAL");
+                for (int diag = 0; diag < matchingDiagonals.Count; diag++)
+                {
+                    Console.Write($" {matchingDiagonals[diag]}");
+                    if (diag < matchingDiagonals.Count - 1)
+                    {
+                        Console.Write(" AND");
+                    }
+                }
             }
         }
 
@@ -190,7 +192,7 @@ namespace SlotMachine
         /// <param name="winnings"></param>
         public static void DisplayTotalWin(int winnings)
         {
-            Console.WriteLine($"\nTOTAL WIN = ${winnings}\n\n\n");
+            Console.WriteLine($"\n\nTOTAL WIN = ${winnings}\n\n\n");
         }
 
         /// <summary>

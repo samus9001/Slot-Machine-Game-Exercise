@@ -85,21 +85,15 @@ namespace SlotMachine
                 balance -= decreaseBalanceForGameRound;
                 UIMethods.DisplaySlotMachineArray(slotMachine, rowCnt);
 
-                // counter variables used for checking for matches
-                int matchingRows = LogicMethods.CheckWinningRows(rowCnt, slotMachine);
-                int matchingColumns = LogicMethods.CheckWinningColumns(rowCnt, grid3x3, slotMachine);
-                int matchingDiagonals = LogicMethods.CheckWinningDiags(rowCnt, grid3x3, slotMachine);
-
-                matchingRows = LogicMethods.CheckWinningRows(rowCnt, slotMachine);
+                LogicMethods.CheckWinningRows(rowCnt, slotMachine);
 
                 if (rowCnt == 3)
                 {
-                    matchingColumns = LogicMethods.CheckWinningColumns(rowCnt, grid3x3, slotMachine);
-
-                    matchingDiagonals = LogicMethods.CheckWinningDiags(rowCnt, grid3x3, slotMachine);
+                    LogicMethods.CheckWinningCols(rowCnt, slotMachine);
+                    LogicMethods.CheckWinningDiags(rowCnt, grid3x3, slotMachine);
                 }
-                
-                balance = LogicMethods.GrantWins(matchingRows, rows, matchingColumns, cols, matchingDiagonals, LARGE_WIN, MEDIUM_WIN, SMALL_WIN, balance);
+
+                balance = LogicMethods.GrantWins(rowCnt, slotMachine, grid3x3, rows, cols, LARGE_WIN, MEDIUM_WIN, SMALL_WIN, balance);
 
                 // checks if the game is over
                 if (balance <= 0)
