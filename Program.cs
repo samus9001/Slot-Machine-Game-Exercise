@@ -81,7 +81,8 @@ namespace SlotMachine
 
                 LogicMethods.CheckWinningRows(grid);
 
-                balance = LogicMethods.GrantWins(grid, LARGE_WIN, MEDIUM_WIN, SMALL_WIN, balance);
+                int winnings = LogicMethods.GrantWins(grid, LARGE_WIN, MEDIUM_WIN, SMALL_WIN, balance);
+                balance += winnings;
 
                 // checks if the game is over
                 if (balance <= 0)
