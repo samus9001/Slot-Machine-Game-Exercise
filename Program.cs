@@ -4,37 +4,29 @@ namespace SlotMachine
 {
     internal class Program
     {
-        const int MAX_NUMBER = 10; // sets the range of values that can be generated to fill the array
-        const int MAX_LOSS = 5; // largest amount of balance that is lost
+        const int ROW = 1;
+        public const int ROWS = 3;
+        public const int COLS = 3;
+        const int STARTING_BALANCE = 100; //sets the balance upon starting a new game
+        const int LOW_BALANCE = 5; // sets the limit on available lines depending on balance
+        public const int MAX_NUMBER = 10; // sets the range of values that can be generated to fill the array
+        const int MAX_LOSS = 5; // sets the balance amount lost when the array size is 3x3
         const int SMALL_WIN = 50;
         const int MEDIUM_WIN = 500;
         const int LARGE_WIN = 1000;
-        const int STARTING_BALANCE = 100;
-        const int LOW_BALANCE = 5; // sets the limit on available lines depending on balance
 
         static void Main(string[] args)
         {
             int balance = STARTING_BALANCE;
             char userInput;
 
-            // creates a 3x3 array
-            int[,] slotMachine = new int[3, 3];
-
-            // checks the length of each dimension of the array
-            int rows = slotMachine.GetLength(0);
-            int cols = slotMachine.GetLength(1);
+            // creates a 1x3 array for playing a single line
+            int[,] grid = new int[ROW, COLS];
 
             UIMethods.DisplayWelcome();
 
             while (true)
             {
-                // used for setting the array length to one line by default
-                int rowCnt = 1;
-                int colCnt = 3;
-
-                // used for setting the array length to three lines
-                int grid3x3 = 3;
-
                 UIMethods.DisplayBalance(balance);
 
                 if (balance >= LOW_BALANCE)
@@ -77,23 +69,19 @@ namespace SlotMachine
 
                 if (userInput == '3')
                 {
-                    rowCnt = grid3x3;
+                    grid = new int[ROWS, COLS];
                     decreaseBalanceForGameRound = MAX_LOSS;
+                    LogicMethods.CheckWinningCols(grid);
+                    LogicMethods.CheckWinningDiags(grid);
                 }
 
-                slotMachine = LogicMethods.GenerateSlotMachineAny(rowCnt, colCnt, MAX_NUMBER);
+                grid = LogicMethods.GenerateSlotMachineAny(grid);
                 balance -= decreaseBalanceForGameRound;
-                UIMethods.DisplaySlotMachineArray(slotMachine, rowCnt);
+                UIMethods.DisplaySlotMachineArray(grid);
 
-                LogicMethods.CheckWinningRows(rowCnt, slotMachine);
+                LogicMethods.CheckWinningRows(grid);
 
-                if (rowCnt == 3)
-                {
-                    LogicMethods.CheckWinningCols(rowCnt, slotMachine);
-                    LogicMethods.CheckWinningDiags(rowCnt, grid3x3, slotMachine);
-                }
-
-                balance = LogicMethods.GrantWins(rowCnt, slotMachine, grid3x3, rows, cols, LARGE_WIN, MEDIUM_WIN, SMALL_WIN, balance);
+                balance = LogicMethods.GrantWins(grid, LARGE_WIN, MEDIUM_WIN, SMALL_WIN, balance);
 
                 // checks if the game is over
                 if (balance <= 0)

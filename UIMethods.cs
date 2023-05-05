@@ -92,17 +92,16 @@ namespace SlotMachine
         /// <summary>
         /// sets the UI to display the SlotMachine array
         /// </summary>
-        /// <param name="slotMachine"></param>
-        /// <param name="rowCnt"></param>
-        public static void DisplaySlotMachineArray(int[,] slotMachine, int rowCnt)
+        /// <param name="grid"></param>
+        public static void DisplaySlotMachineArray(int[,] grid)
         {
-            int cols = slotMachine.GetLength(1);
+            int cols = grid.GetLength(1);
 
-            for (int row = 0; row < rowCnt; row++)
+            for (int row = 0; row < grid.GetLength(0); row++)
             {
                 for (int col = 0; col < cols; col++)
                 {
-                    Console.Write(slotMachine[row, col] + " ");
+                    Console.Write(grid[row, col] + " ");
                 }
                 Console.WriteLine("\n");
             }
