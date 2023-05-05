@@ -120,7 +120,7 @@ namespace SlotMachine
         /// <param name="SMALL_WIN"></param>
         /// <param name="balance"></param>
         /// <returns></returns>
-        public static int GrantWins(int[,] grid, int LARGE_WIN, int MEDIUM_WIN, int SMALL_WIN, int balance)
+        public static int GrantWins(int[,] grid, int LARGE_WIN, int MEDIUM_WIN, int SMALL_WIN, int balance, int userInput)
         {
             int winnings = 0;
             bool jackpotWin = false;
@@ -130,14 +130,14 @@ namespace SlotMachine
             List<int> matchingColumns = LogicMethods.CheckWinningCols(grid);
             List<int> matchingDiagonals = LogicMethods.CheckWinningDiags(grid);
 
-            if (matchingRows.Count == Program.ROWS && matchingColumns.Count == Program.COLS)
+            if (userInput == '3' && matchingRows.Count == Program.ROWS && matchingColumns.Count == Program.COLS)
             {
                 UIMethods.DisplayJackpotWin(LARGE_WIN);
                 winnings += LARGE_WIN;
                 jackpotWin = true;
             }
 
-            if (!jackpotWin && (matchingRows.Count == Program.ROWS || matchingColumns.Count == Program.COLS))
+            if (userInput == '3' && !jackpotWin && (matchingRows.Count == Program.ROWS || matchingColumns.Count == Program.COLS))
             {
                 UIMethods.DisplayBigWin(MEDIUM_WIN);
                 winnings += MEDIUM_WIN;
@@ -151,12 +151,12 @@ namespace SlotMachine
                     winnings += matchingRows.Count * SMALL_WIN;
                     UIMethods.DisplayRowsWin(matchingRows);
                 }
-                if (matchingColumns.Count > 0)
+                if (userInput == '3' && matchingColumns.Count > 0)
                 {
                     winnings += matchingColumns.Count * SMALL_WIN;
                     UIMethods.DisplayColumnsWin(matchingColumns);
                 }
-                if (matchingDiagonals.Count > 0)
+                if (userInput == '3' && matchingDiagonals.Count > 0)
                 {
                     winnings += matchingDiagonals.Count * SMALL_WIN;
                     UIMethods.DisplayDiagonalsWin(matchingDiagonals);
