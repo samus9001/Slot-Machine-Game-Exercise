@@ -5,12 +5,13 @@ namespace SlotMachine
     public static class LogicMethods
     {
         /// <summary>
-        /// generates either a 3x1 or 3x3 array with random values between 0-9 based on amount of lines played
+        /// generates a 3x3 array with random values between 0-9
         /// </summary>
         /// <param name="grid"></param>
         /// <returns></returns>
-        public static int[,] GenerateSlotMachineAny(int[,] grid)
+        public static int[,] GenerateSlotMachineAny()
         {
+            int[,] grid = new int[Program.ROWS, Program.COLS];
             var rnd = new Random();
             int randomNumber;
 
@@ -23,6 +24,46 @@ namespace SlotMachine
                 }
             }
             return grid;
+        }
+
+        /// <summary>
+        /// sets the values of the first and third row of the grid to 0
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <returns></returns>
+        public static int[,] GenerateSlotMachineSingleRow(int[,] grid)
+        {
+            var rnd = new Random();
+            int randomNumber;
+
+            for (int row = 0; row < grid.GetLength(0); row++)
+            {
+                for (int col = 0; col < grid.GetLength(1); col++)
+                {
+                    if (row == 0 || row == 2)
+                    {
+                        grid[row, col] = 0;
+                    }
+                    else if (row == 1)
+                    {
+                        randomNumber = rnd.Next(Program.MAX_NUMBER);
+                        grid[row, col] = randomNumber;
+                    }
+                }
+            }
+            return grid;
+        }
+
+        /// <summary>
+        /// checks for matches on the single row
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <returns></returns>
+        public static bool CheckSingleWinningRow(int[,] grid)
+        {
+            int first = grid[1, 0];
+
+            return grid[1, 1] == first && grid[1, 2] == first;
         }
 
         /// <summary>
@@ -97,79 +138,196 @@ namespace SlotMachine
         {
             List<int> winningDiags = new List<int>();
 
-            if (grid.GetLength(0) == 3)
+            if (grid[0, 0] == grid[1, 1] && grid[1, 1] == grid[2, 2])
             {
-                if (grid[0, 0] == grid[1, 1] && grid[1, 1] == grid[2, 2])
-                {
-                    winningDiags.Add(1);
-                }
-                if (grid[0, 2] == grid[1, 1] && grid[1, 1] == grid[2, 0])
-                {
-                    winningDiags.Add(2);
-                }
+                winningDiags.Add(1);
+            }
+            if (grid[0, 2] == grid[1, 1] && grid[1, 1] == grid[2, 0])
+            {
+                winningDiags.Add(2);
             }
             return winningDiags;
         }
 
         /// <summary>
-        /// checks for all matches and displays them if present then updates the balance
+        /// checks for a jackpot match
         /// </summary>
-        /// <param name="grid"></param>
-        /// <param name="LARGE_WIN"></param>
-        /// <param name="MEDIUM_WIN"></param>
-        /// <param name="SMALL_WIN"></param>
+        /// <param name="userInput"></param>
+        /// <param name="matchingRows"></param>
+        /// <param name="matchingCols"></param>
+        /// <returns></returns>
+        public static bool CheckJackpotMatch(char userInput, List<int> matchingRows, List<int> matchingCols)
+        {
+            bool jackpotMatch = false;
+
+            if (userInput == '3' && matchingRows.Count == Program.ROWS && matchingCols.Count == Program.COLS)
+            {
+                jackpotMatch = true;
+            }
+            return jackpotMatch;
+        }
+
+        /// <summary>
+        /// checks if there is a big match and updates a bool to store it
+        /// </summary>
+        /// <param name="userInput"></param>
+        /// <param name="jackpotMatch"></param>
+        /// <param name="matchingRows"></param>
+        /// <param name="matchingCols"></param>
+        /// <returns></returns>
+        public static bool CheckBigMatch(char userInput, bool jackpotMatch, List<int> matchingRows, List<int> matchingCols)
+        {
+            bool bigMatch = false;
+
+            if (userInput == '3' && !jackpotMatch && (matchingRows.Count == Program.ROWS || matchingCols.Count == Program.COLS))
+            {
+                bigMatch = true;
+            }
+            return bigMatch;
+        }
+
+        /// <summary>
+        /// checks if there is a single row match and updates a bool to store it
+        /// </summary>
+        /// <param name="jackpotMatch"></param>
+        /// <param name="bigMatch"></param>
+        /// <param name="userInput"></param>
+        /// <param name="first"></param>
+        /// <param name="matchingRows"></param>
+        /// <param name="matchingCols"></param>
+        /// <returns></returns>
+        public static bool CheckSingleRowMatch(bool jackpotMatch, bool bigMatch, char userInput, int[,] grid, List<int> matchingRows, List<int> matchingCols)
+        {
+            bool singleRowMatch = false;
+
+            if (!jackpotMatch && !bigMatch && userInput == '1' && CheckSingleWinningRow(grid))
+            {
+                singleRowMatch = true;
+            }
+            return singleRowMatch;
+        }
+
+        /// <summary>
+        /// checks if there are matching rows and updates a bool to store it
+        /// </summary>
+        /// <param name="jackpotMatch"></param>
+        /// <param name="bigMatch"></param>
+        /// <param name="userInput"></param>
+        /// <param name="matchingRows"></param>
+        /// <returns></returns>
+        public static bool CheckRowsMatch(bool jackpotMatch, bool bigMatch, char userInput, List<int> matchingRows)
+        {
+            bool rowsMatch = false;
+
+            if (!jackpotMatch && !bigMatch && userInput == '3' && matchingRows.Count > 0)
+            {
+                rowsMatch = true;
+            }
+            return rowsMatch;
+        }
+
+        /// <summary>
+        /// checks if there are matching columns and updates a bool to store it
+        /// </summary>
+        /// <param name="jackpotMatch"></param>
+        /// <param name="bigMatch"></param>
+        /// <param name="userInput"></param>
+        /// <param name="matchingCols"></param>
+        /// <returns></returns>
+        public static bool CheckColsMatch(bool jackpotMatch, bool bigMatch, char userInput, List<int> matchingCols)
+        {
+            bool colsMatch = false;
+
+            if (!jackpotMatch && !bigMatch && userInput == '3' && matchingCols.Count > 0)
+            {
+                colsMatch = true;
+            }
+            return colsMatch;
+        }
+
+        /// <summary>
+        /// checks if there are matching diagonals and updates a bool to store it
+        /// </summary>
+        /// <param name="jackpotMatch"></param>
+        /// <param name="bigMatch"></param>
+        /// <param name="userInput"></param>
+        /// <param name="matchingDiags"></param>
+        /// <returns></returns>
+        public static bool CheckDiagsMatch(bool jackpotMatch, bool bigMatch, char userInput, List<int> matchingDiags)
+        {
+            bool diagsMatch = false;
+
+            if (!jackpotMatch && !bigMatch && userInput == '3' && matchingDiags.Count > 0)
+            {
+                diagsMatch = true;
+            }
+            return diagsMatch;
+        }
+
+        /// <summary>
+        /// sets the win amount when a match is found
+        /// </summary>
+        /// <param name="jackpotMatch"></param>
+        /// <param name="bigMatch"></param>
+        /// <param name="singleRowMatch"></param>
+        /// <param name="rowsMatch"></param>
+        /// <param name="colsMatch"></param>
+        /// <param name="diagsMatch"></param>
+        /// <param name="matchingRows"></param>
+        /// <param name="matchingCols"></param>
+        /// <param name="matchingDiags"></param>
         /// <param name="balance"></param>
         /// <returns></returns>
-        public static int GrantWins(int[,] grid, int LARGE_WIN, int MEDIUM_WIN, int SMALL_WIN, int balance, int userInput)
+        public static int GrantWins(bool jackpotMatch, bool bigMatch, bool singleRowMatch, bool rowsMatch, bool colsMatch, bool diagsMatch, List<int> matchingRows, List<int> matchingCols, List<int> matchingDiags, int balance)
         {
             int winnings = 0;
-            bool jackpotWin = false;
-            bool bigWin = false;
 
-            List<int> matchingRows = LogicMethods.CheckWinningRows(grid);
-            List<int> matchingColumns = LogicMethods.CheckWinningCols(grid);
-            List<int> matchingDiagonals = LogicMethods.CheckWinningDiags(grid);
-
-            if (userInput == '3' && matchingRows.Count == Program.ROWS && matchingColumns.Count == Program.COLS)
+            if (jackpotMatch)
             {
-                UIMethods.DisplayJackpotWin(LARGE_WIN);
-                winnings += LARGE_WIN;
-                jackpotWin = true;
+                winnings += Program.LARGE_WIN;
             }
 
-            if (userInput == '3' && !jackpotWin && (matchingRows.Count == Program.ROWS || matchingColumns.Count == Program.COLS))
+            if (!jackpotMatch && bigMatch)
             {
-                UIMethods.DisplayBigWin(MEDIUM_WIN);
-                winnings += MEDIUM_WIN;
-                bigWin = true;
+                winnings += Program.MEDIUM_WIN;
             }
 
-            if (!jackpotWin && !bigWin)
+            if (!jackpotMatch && bigMatch && singleRowMatch)
             {
-                if (matchingRows.Count > 0)
-                {
-                    winnings += matchingRows.Count * SMALL_WIN;
-                    UIMethods.DisplayRowsWin(matchingRows);
-                }
-                if (userInput == '3' && matchingColumns.Count > 0)
-                {
-                    winnings += matchingColumns.Count * SMALL_WIN;
-                    UIMethods.DisplayColumnsWin(matchingColumns);
-                }
-                if (userInput == '3' && matchingDiagonals.Count > 0)
-                {
-                    winnings += matchingDiagonals.Count * SMALL_WIN;
-                    UIMethods.DisplayDiagonalsWin(matchingDiagonals);
-                }
+                winnings += matchingRows.Count * Program.SMALL_WIN;
             }
 
-            if (winnings > 0)
+            if (!jackpotMatch && bigMatch && rowsMatch)
             {
-                UIMethods.DisplayTotalWin(winnings);
+                winnings += matchingRows.Count * Program.SMALL_WIN;
+            }
+
+            if (!jackpotMatch && bigMatch && colsMatch)
+            {
+                winnings += matchingCols.Count * Program.SMALL_WIN;
+            }
+
+            if (!jackpotMatch && bigMatch && diagsMatch)
+            {
+                winnings += matchingDiags.Count * Program.SMALL_WIN;
             }
 
             balance = balance + winnings;
             return balance;
+        }
+
+        /// <summary>
+        /// checks if the winnings has increased and updates a bool to store it
+        /// </summary>
+        /// <param name="winnings"></param>
+        public static void WinTotal(int winnings)
+        {
+            bool winAmount = false;
+
+            if (winnings > 0)
+            {
+                winAmount = true;
+            }
         }
     }
 }

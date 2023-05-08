@@ -110,28 +110,47 @@ namespace SlotMachine
         /// <summary>
         /// sets the UI message when there is a jackpot match
         /// </summary>
+        /// <param name="jackpot"></param>
         /// <param name="LARGE_WIN"></param>
-        public static void DisplayJackpotWin(int LARGE_WIN)
+        public static void DisplayJackpotWin(bool jackpot, int LARGE_WIN)
         {
-            Console.WriteLine($"\nJACKPOT!!! YOU WIN ${LARGE_WIN}!\n");
+            if (jackpot)
+            {
+                Console.WriteLine($"\nJACKPOT!!! YOU WIN ${LARGE_WIN}!\n");
+            }
         }
 
         /// <summary>
         /// sets the UI message when there is a match on eiter all columns or rows
         /// </summary>
         /// <param name="MEDIUM_WIN"></param>
-        public static void DisplayBigWin(int MEDIUM_WIN)
+        public static void DisplayBigWin(bool jackpotMatch, bool bigWin, int MEDIUM_WIN)
         {
-            Console.WriteLine($"\nYOU HIT A BIG WIN!! YOU WIN ${MEDIUM_WIN}!\n");
+            if (!jackpotMatch && bigWin)
+            {
+                Console.WriteLine($"\nYOU HIT A BIG WIN!! YOU WIN ${MEDIUM_WIN}!\n");
+            }
         }
 
         /// <summary>
-        /// sets the UI message when there is a match on the rows
+        /// sets the UI message when there is a match on the single row
+        /// </summary>
+        /// <param name="SMALL_WIN"></param>
+        public static void DisplaySingleRowWin(bool jackpotMatch, bool bigMatch, bool singleRowMatch, int SMALL_WIN)
+        {
+            if (!jackpotMatch && !bigMatch && singleRowMatch)
+            {
+                Console.WriteLine($"\nYOU HIT A MATCH! YOU WIN ${SMALL_WIN}!\n");
+            }
+        }
+
+        /// <summary>
+        /// sets the UI message when there is a match on each row
         /// </summary>
         /// <param name="matchingRows"></param>
-        public static void DisplayRowsWin(List<int> matchingRows)
+        public static void DisplayRowsWin(List<int> matchingRows, bool jackpotMatch, bool bigMatch, bool rowsWin)
         {
-            if (matchingRows.Count > 0)
+            if (matchingRows.Count > 0 && !jackpotMatch && !bigMatch && rowsWin)
             {
                 Console.Write("\nYOU HIT A MATCH ON ROW");
                 for (int row = 0; row < matchingRows.Count; row++)
@@ -146,12 +165,12 @@ namespace SlotMachine
         }
 
         /// <summary>
-        /// sets the UI message when there is a match on the columns
+        /// sets the UI message when there is a match on each column
         /// </summary>
         /// <param name="matchingColumns"></param>
-        public static void DisplayColumnsWin(List<int> matchingColumns)
+        public static void DisplayColumnsWin(List<int> matchingColumns, bool jackpotMatch, bool bigMatch, bool colsWin)
         {
-            if (matchingColumns.Count > 0)
+            if (matchingColumns.Count > 0 && !jackpotMatch && !bigMatch && colsWin)
             {
                 Console.Write("\nYOU HIT A MATCH ON COLUMN");
                 for (int col = 0; col < matchingColumns.Count; col++)
@@ -166,12 +185,12 @@ namespace SlotMachine
         }
 
         /// <summary>
-        /// sets the UI message when there is a match on the diagonals
+        /// sets the UI message when there is a match on each diagonal
         /// </summary>
         /// <param name="matchingDiagonals"></param>
-        public static void DisplayDiagonalsWin(List<int> matchingDiagonals)
+        public static void DisplayDiagonalsWin(List<int> matchingDiagonals, bool jackpotMatch, bool bigMatch, bool diagsWin)
         {
-            if (matchingDiagonals.Count > 0)
+            if (matchingDiagonals.Count > 0 && !jackpotMatch && !bigMatch && diagsWin)
             {
                 Console.Write("\nYOU HIT A MATCH ON DIAGONAL");
                 for (int diag = 0; diag < matchingDiagonals.Count; diag++)
@@ -189,9 +208,12 @@ namespace SlotMachine
         /// sets the UI message to show the total amount won each round
         /// </summary>
         /// <param name="winnings"></param>
-        public static void DisplayTotalWin(int winnings)
+        public static void DisplayTotalWin(bool winAmount, int winnings)
         {
-            Console.WriteLine($"\n\nTOTAL WIN = ${winnings}\n\n\n");
+            if (winAmount)
+            {
+                Console.WriteLine($"\n\nTOTAL WIN = ${winnings}\n\n\n");
+            }
         }
 
         /// <summary>
