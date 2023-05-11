@@ -8,7 +8,7 @@ namespace SlotMachine
         public const int COLS = 3; // sets the column length for the grid
         const int STARTING_BALANCE = 100; // sets the balance upon starting a new game
         const int LOW_BALANCE = 5; // sets the limit on available lines depending on balance
-        public const int MAX_NUMBER = 0; // sets the range of values that can be generated to fill the grid
+        public const int MAX_NUMBER = 10; // sets the range of values that can be generated to fill the grid
         const int MAX_LOSS = 5; // sets the balance amount lost when all lines are playes
         public const int SMALL_WIN = 50; // sets the win amount for a single line
         public const int MEDIUM_WIN = 500; // sets the win amount for multiple lines
@@ -18,7 +18,7 @@ namespace SlotMachine
         {
             int balance = STARTING_BALANCE;
             char userInput;
-            
+
             UIMethods.DisplayWelcome();
 
             while (true) // runs until the user quits the game
@@ -29,6 +29,8 @@ namespace SlotMachine
                 bool rowsMatch = false;
                 bool colsMatch = false;
                 bool diagsMatch = false;
+                bool winAmount = false;
+                int winnings = 0;
 
                 UIMethods.DisplayBalance(balance);
 
@@ -47,7 +49,7 @@ namespace SlotMachine
 
                 UIMethods.ClearScreen();
 
-                // checks if input is out of bounds
+                // checks if the input is valid or not
                 bool validOption = (userInput == '1' || userInput == '3' || userInput == 'L');
 
                 if (!validOption)
@@ -70,6 +72,7 @@ namespace SlotMachine
 
                 int decreaseBalanceForGameRound = 1;
                 int[,] grid = LogicMethods.GenerateSlotMachineAny();
+
                 List<int> matchingRows = LogicMethods.CheckWinningRows(grid);
                 List<int> matchingCols = LogicMethods.CheckWinningCols(grid);
                 List<int> matchingDiags = LogicMethods.CheckWinningDiags(grid);
@@ -77,7 +80,10 @@ namespace SlotMachine
                 if (userInput == '1')
                 {
                     LogicMethods.GenerateSlotMachineSingleRow(grid);
+                    UIMethods.DisplaySlotMachineArray(grid);
+
                     LogicMethods.CheckSingleWinningRow(grid);
+                    singleRowMatch = LogicMethods.CheckSingleRowMatch(jackpotMatch, bigMatch, userInput, grid);
                     UIMethods.DisplaySingleRowWin(jackpotMatch, bigMatch, singleRowMatch, SMALL_WIN);
                 }
 
@@ -85,26 +91,26 @@ namespace SlotMachine
                 {
                     decreaseBalanceForGameRound = MAX_LOSS;
 
+                    UIMethods.DisplaySlotMachineArray(grid);
+
                     jackpotMatch = LogicMethods.CheckJackpotMatch(userInput, matchingRows, matchingCols);
-                    LogicMethods.CheckBigMatch(userInput, jackpotMatch, matchingRows, matchingCols);
-                    LogicMethods.CheckSingleRowMatch(jackpotMatch, bigMatch, userInput, grid, matchingRows, matchingCols);
-                    LogicMethods.CheckRowsMatch(jackpotMatch, bigMatch, userInput, matchingRows);
-                    LogicMethods.CheckColsMatch(jackpotMatch, bigMatch, userInput, matchingCols);
-                    LogicMethods.CheckDiagsMatch(jackpotMatch, bigMatch, userInput, matchingDiags);
+                    bigMatch = LogicMethods.CheckBigMatch(userInput, jackpotMatch, matchingRows, matchingCols);
+                    rowsMatch = LogicMethods.CheckRowsMatch(jackpotMatch, bigMatch, userInput, matchingRows);
+                    colsMatch = LogicMethods.CheckColsMatch(jackpotMatch, bigMatch, userInput, matchingCols);
+                    diagsMatch = LogicMethods.CheckDiagsMatch(jackpotMatch, bigMatch, userInput, matchingDiags);
 
                     UIMethods.DisplayJackpotWin(jackpotMatch, LARGE_WIN);
                     UIMethods.DisplayBigWin(jackpotMatch, bigMatch, LARGE_WIN);
-                    UIMethods.DisplaySingleRowWin(jackpotMatch, bigMatch, singleRowMatch, SMALL_WIN);
-                    UIMethods.DisplayRowsWin(matchingRows, jackpotMatch, bigMatch, rowsMatch);
-                    UIMethods.DisplayColumnsWin(matchingCols, jackpotMatch, bigMatch, colsMatch);
-                    UIMethods.DisplayDiagonalsWin(matchingDiags, jackpotMatch, bigMatch, diagsMatch);
+                    UIMethods.DisplayRowsWin(matchingRows, jackpotMatch, bigMatch);
+                    UIMethods.DisplayColumnsWin(matchingCols, jackpotMatch, bigMatch);
+                    UIMethods.DisplayDiagonalsWin(matchingDiags, jackpotMatch, bigMatch);
                 }
 
                 balance -= decreaseBalanceForGameRound;
-                UIMethods.DisplaySlotMachineArray(grid);
-
-                int winnings = LogicMethods.GrantWins(jackpotMatch, bigMatch, singleRowMatch, rowsMatch, colsMatch, diagsMatch, matchingRows, matchingCols, matchingDiags, balance);
-                balance = winnings;
+                winnings = LogicMethods.GrantWins(jackpotMatch, bigMatch, singleRowMatch, rowsMatch, colsMatch, diagsMatch, matchingRows, matchingCols, matchingDiags);
+                balance += winnings;
+                winAmount = LogicMethods.WinTotal(winnings);
+                UIMethods.DisplayTotalWin(winAmount, winnings);
 
                 // checks if the game is over
                 if (balance <= 0)

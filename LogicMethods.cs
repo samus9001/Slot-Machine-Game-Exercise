@@ -7,7 +7,6 @@ namespace SlotMachine
         /// <summary>
         /// generates a 3x3 array with random values between 0-9
         /// </summary>
-        /// <param name="grid"></param>
         /// <returns></returns>
         public static int[,] GenerateSlotMachineAny()
         {
@@ -55,7 +54,7 @@ namespace SlotMachine
         }
 
         /// <summary>
-        /// checks for matches on the single row
+        /// checks for matches on the single row for playing one line
         /// </summary>
         /// <param name="grid"></param>
         /// <returns></returns>
@@ -192,11 +191,9 @@ namespace SlotMachine
         /// <param name="jackpotMatch"></param>
         /// <param name="bigMatch"></param>
         /// <param name="userInput"></param>
-        /// <param name="first"></param>
-        /// <param name="matchingRows"></param>
-        /// <param name="matchingCols"></param>
+        /// <param name="grid"></param>
         /// <returns></returns>
-        public static bool CheckSingleRowMatch(bool jackpotMatch, bool bigMatch, char userInput, int[,] grid, List<int> matchingRows, List<int> matchingCols)
+        public static bool CheckSingleRowMatch(bool jackpotMatch, bool bigMatch, char userInput, int[,] grid)
         {
             bool singleRowMatch = false;
 
@@ -276,9 +273,8 @@ namespace SlotMachine
         /// <param name="matchingRows"></param>
         /// <param name="matchingCols"></param>
         /// <param name="matchingDiags"></param>
-        /// <param name="balance"></param>
         /// <returns></returns>
-        public static int GrantWins(bool jackpotMatch, bool bigMatch, bool singleRowMatch, bool rowsMatch, bool colsMatch, bool diagsMatch, List<int> matchingRows, List<int> matchingCols, List<int> matchingDiags, int balance)
+        public static int GrantWins(bool jackpotMatch, bool bigMatch, bool singleRowMatch, bool rowsMatch, bool colsMatch, bool diagsMatch, List<int> matchingRows, List<int> matchingCols, List<int> matchingDiags)
         {
             int winnings = 0;
 
@@ -292,35 +288,33 @@ namespace SlotMachine
                 winnings += Program.MEDIUM_WIN;
             }
 
-            if (!jackpotMatch && bigMatch && singleRowMatch)
+            if (!jackpotMatch && !bigMatch && singleRowMatch)
+            {
+                winnings += Program.SMALL_WIN;
+            }
+
+            if (!jackpotMatch && !bigMatch && rowsMatch)
             {
                 winnings += matchingRows.Count * Program.SMALL_WIN;
             }
 
-            if (!jackpotMatch && bigMatch && rowsMatch)
-            {
-                winnings += matchingRows.Count * Program.SMALL_WIN;
-            }
-
-            if (!jackpotMatch && bigMatch && colsMatch)
+            if (!jackpotMatch && !bigMatch && colsMatch)
             {
                 winnings += matchingCols.Count * Program.SMALL_WIN;
             }
 
-            if (!jackpotMatch && bigMatch && diagsMatch)
+            if (!jackpotMatch && !bigMatch && diagsMatch)
             {
                 winnings += matchingDiags.Count * Program.SMALL_WIN;
             }
-
-            balance = balance + winnings;
-            return balance;
+            return winnings;
         }
 
         /// <summary>
         /// checks if the winnings has increased and updates a bool to store it
         /// </summary>
         /// <param name="winnings"></param>
-        public static void WinTotal(int winnings)
+        public static bool WinTotal(int winnings)
         {
             bool winAmount = false;
 
@@ -328,6 +322,7 @@ namespace SlotMachine
             {
                 winAmount = true;
             }
+            return winAmount;
         }
     }
 }
