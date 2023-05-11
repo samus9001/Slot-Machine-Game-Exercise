@@ -8,7 +8,7 @@ namespace SlotMachine
         public const int COLS = 3; // sets the column length for the grid
         const int STARTING_BALANCE = 100; // sets the balance upon starting a new game
         const int LOW_BALANCE = 5; // sets the limit on available lines depending on balance
-        public const int MAX_NUMBER = 10; // sets the range of values that can be generated to fill the grid
+        public const int MAX_NUMBER = 0; // sets the range of values that can be generated to fill the grid
         const int MAX_LOSS = 5; // sets the balance amount lost when all lines are playes
         public const int SMALL_WIN = 50; // sets the win amount for a single line
         public const int MEDIUM_WIN = 500; // sets the win amount for multiple lines
@@ -85,7 +85,7 @@ namespace SlotMachine
                 {
                     decreaseBalanceForGameRound = MAX_LOSS;
 
-                    LogicMethods.CheckJackpotMatch(userInput, matchingRows, matchingCols);
+                    jackpotMatch = LogicMethods.CheckJackpotMatch(userInput, matchingRows, matchingCols);
                     LogicMethods.CheckBigMatch(userInput, jackpotMatch, matchingRows, matchingCols);
                     LogicMethods.CheckSingleRowMatch(jackpotMatch, bigMatch, userInput, grid, matchingRows, matchingCols);
                     LogicMethods.CheckRowsMatch(jackpotMatch, bigMatch, userInput, matchingRows);
