@@ -150,13 +150,11 @@ namespace SlotMachine
         /// <returns></returns>
         public static bool CheckJackpotMatch(List<int> matchingRows, List<int> matchingCols)
         {
-            bool jackpotMatch = false;
-
             if (matchingRows.Count == Program.ROWS && matchingCols.Count == Program.COLS)
             {
-                jackpotMatch = true;
+                return true;
             }
-            return jackpotMatch;
+            return false;
         }
 
         /// <summary>
@@ -167,13 +165,11 @@ namespace SlotMachine
         /// <returns></returns>
         public static bool CheckBigMatch(List<int> matchingRows, List<int> matchingCols)
         {
-            bool bigMatch = false;
-
             if ((matchingRows.Count == Program.ROWS || matchingCols.Count == Program.COLS))
             {
-                bigMatch = true;
+                return true;
             }
-            return bigMatch;
+            return false;
         }
 
         /// <summary>
@@ -183,13 +179,11 @@ namespace SlotMachine
         /// <returns></returns>
         public static bool CheckSingleRowMatch(int[,] grid)
         {
-            bool singleRowMatch = false;
-
             if (CheckSingleWinningRow(grid))
             {
-                singleRowMatch = true;
+                return true;
             }
-            return singleRowMatch;
+            return false;
         }
 
         /// <summary>
@@ -199,13 +193,11 @@ namespace SlotMachine
         /// <returns></returns>
         public static bool CheckRowsMatch(List<int> matchingRows)
         {
-            bool rowsMatch = false;
-
             if (matchingRows.Count > 0)
             {
-                rowsMatch = true;
+                return true;
             }
-            return rowsMatch;
+            return false;
         }
 
         /// <summary>
@@ -215,13 +207,11 @@ namespace SlotMachine
         /// <returns></returns>
         public static bool CheckColsMatch(List<int> matchingCols)
         {
-            bool colsMatch = false;
-
             if (matchingCols.Count > 0)
             {
-                colsMatch = true;
+                return true;
             }
-            return colsMatch;
+            return false;
         }
 
         /// <summary>
@@ -231,13 +221,11 @@ namespace SlotMachine
         /// <returns></returns>
         public static bool CheckDiagsMatch(List<int> matchingDiags)
         {
-            bool diagsMatch = false;
-
             if (matchingDiags.Count > 0)
             {
-                diagsMatch = true;
+                return true;
             }
-            return diagsMatch;
+            return false;
         }
 
         /// <summary>
@@ -295,13 +283,11 @@ namespace SlotMachine
         /// <param name="winnings"></param>
         public static bool WinTotal(int winnings)
         {
-            bool winAmount = false;
-
             if (winnings > 0)
             {
-                winAmount = true;
+                return true;
             }
-            return winAmount;
+            return false;
         }
     }
 }
