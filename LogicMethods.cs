@@ -246,31 +246,27 @@ namespace SlotMachine
             int winnings = 0;
 
             if (jackpotMatch)
-            {
-                winnings += Program.LARGE_WIN;
-            }
+                return Program.LARGE_WIN;
 
-            if (!jackpotMatch && bigMatch)
-            {
-                winnings += Program.MEDIUM_WIN;
-            }
+            if (bigMatch)
+                return Program.MEDIUM_WIN;
 
-            if (!jackpotMatch && !bigMatch && singleRowMatch)
+            if (singleRowMatch)
             {
                 winnings += Program.SMALL_WIN;
             }
 
-            if (!jackpotMatch && !bigMatch && rowsMatch)
+            if (rowsMatch)
             {
                 winnings += matchingRows.Count * Program.SMALL_WIN;
             }
 
-            if (!jackpotMatch && !bigMatch && colsMatch)
+            if (colsMatch)
             {
                 winnings += matchingCols.Count * Program.SMALL_WIN;
             }
 
-            if (!jackpotMatch && !bigMatch && diagsMatch)
+            if (diagsMatch)
             {
                 winnings += matchingDiags.Count * Program.SMALL_WIN;
             }
