@@ -162,15 +162,14 @@ namespace SlotMachine
         /// <summary>
         /// checks if there is a big match and updates a bool to store it
         /// </summary>
-        /// <param name="jackpotMatch"></param>
         /// <param name="matchingRows"></param>
         /// <param name="matchingCols"></param>
         /// <returns></returns>
-        public static bool CheckBigMatch(bool jackpotMatch, List<int> matchingRows, List<int> matchingCols)
+        public static bool CheckBigMatch(List<int> matchingRows, List<int> matchingCols)
         {
             bool bigMatch = false;
 
-            if (!jackpotMatch && (matchingRows.Count == Program.ROWS || matchingCols.Count == Program.COLS))
+            if ((matchingRows.Count == Program.ROWS || matchingCols.Count == Program.COLS))
             {
                 bigMatch = true;
             }
@@ -180,15 +179,13 @@ namespace SlotMachine
         /// <summary>
         /// checks if there is a single row match and updates a bool to store it
         /// </summary>
-        /// <param name="jackpotMatch"></param>
-        /// <param name="bigMatch"></param>
         /// <param name="grid"></param>
         /// <returns></returns>
-        public static bool CheckSingleRowMatch(bool jackpotMatch, bool bigMatch, int[,] grid)
+        public static bool CheckSingleRowMatch(int[,] grid)
         {
             bool singleRowMatch = false;
 
-            if (!jackpotMatch && !bigMatch && CheckSingleWinningRow(grid))
+            if (CheckSingleWinningRow(grid))
             {
                 singleRowMatch = true;
             }
@@ -198,15 +195,13 @@ namespace SlotMachine
         /// <summary>
         /// checks if there are matching rows and updates a bool to store it
         /// </summary>
-        /// <param name="jackpotMatch"></param>
-        /// <param name="bigMatch"></param>
         /// <param name="matchingRows"></param>
         /// <returns></returns>
-        public static bool CheckRowsMatch(bool jackpotMatch, bool bigMatch, List<int> matchingRows)
+        public static bool CheckRowsMatch(List<int> matchingRows)
         {
             bool rowsMatch = false;
 
-            if (!jackpotMatch && !bigMatch && matchingRows.Count > 0)
+            if (matchingRows.Count > 0)
             {
                 rowsMatch = true;
             }
@@ -216,15 +211,13 @@ namespace SlotMachine
         /// <summary>
         /// checks if there are matching columns and updates a bool to store it
         /// </summary>
-        /// <param name="jackpotMatch"></param>
-        /// <param name="bigMatch"></param>
         /// <param name="matchingCols"></param>
         /// <returns></returns>
-        public static bool CheckColsMatch(bool jackpotMatch, bool bigMatch, List<int> matchingCols)
+        public static bool CheckColsMatch(List<int> matchingCols)
         {
             bool colsMatch = false;
 
-            if (!jackpotMatch && !bigMatch && matchingCols.Count > 0)
+            if (matchingCols.Count > 0)
             {
                 colsMatch = true;
             }
@@ -234,15 +227,13 @@ namespace SlotMachine
         /// <summary>
         /// checks if there are matching diagonals and updates a bool to store it
         /// </summary>
-        /// <param name="jackpotMatch"></param>
-        /// <param name="bigMatch"></param>
         /// <param name="matchingDiags"></param>
         /// <returns></returns>
-        public static bool CheckDiagsMatch(bool jackpotMatch, bool bigMatch, List<int> matchingDiags)
+        public static bool CheckDiagsMatch(List<int> matchingDiags)
         {
             bool diagsMatch = false;
 
-            if (!jackpotMatch && !bigMatch && matchingDiags.Count > 0)
+            if (matchingDiags.Count > 0)
             {
                 diagsMatch = true;
             }

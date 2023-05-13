@@ -78,8 +78,8 @@ namespace SlotMachine
                     UIMethods.DisplaySlotMachineArray(grid);
 
                     LogicMethods.CheckSingleWinningRow(grid);
-                    singleRowMatch = LogicMethods.CheckSingleRowMatch(jackpotMatch, bigMatch, grid);
-                    UIMethods.DisplaySingleRowWin(jackpotMatch, bigMatch, singleRowMatch);
+                    singleRowMatch = LogicMethods.CheckSingleRowMatch(grid);
+                    UIMethods.DisplaySingleRowWin(singleRowMatch);
                 }
 
                 List<int> matchingRows = LogicMethods.CheckWinningRows(grid);
@@ -92,17 +92,31 @@ namespace SlotMachine
 
                     UIMethods.DisplaySlotMachineArray(grid);
 
-                    jackpotMatch = LogicMethods.CheckJackpotMatch(matchingRows, matchingCols);
-                    bigMatch = LogicMethods.CheckBigMatch(jackpotMatch, matchingRows, matchingCols);
-                    rowsMatch = LogicMethods.CheckRowsMatch(jackpotMatch, bigMatch, matchingRows);
-                    colsMatch = LogicMethods.CheckColsMatch(jackpotMatch, bigMatch, matchingCols);
-                    diagsMatch = LogicMethods.CheckDiagsMatch(jackpotMatch, bigMatch, matchingDiags);
+                    jackpotMatch = LogicMethods.CheckJackpotMatch(matchingRows, matchingCols); // determines if a jackpot is hit
 
-                    UIMethods.DisplayJackpotWin(jackpotMatch);
-                    UIMethods.DisplayBigWin(jackpotMatch, bigMatch);
-                    UIMethods.DisplayRowsWin(matchingRows, jackpotMatch, bigMatch);
-                    UIMethods.DisplayColumnsWin(matchingCols, jackpotMatch, bigMatch);
-                    UIMethods.DisplayDiagonalsWin(matchingDiags, jackpotMatch, bigMatch);
+                    if (jackpotMatch)
+                    {
+                        UIMethods.DisplayJackpotWin();
+                    }
+                    else
+                    {
+                        bigMatch = LogicMethods.CheckBigMatch(matchingRows, matchingCols); // determings if a big match is hit
+
+                        if (bigMatch)
+                        {
+                            UIMethods.DisplayBigWin();
+                        }
+                        else
+                        {
+                            rowsMatch = LogicMethods.CheckRowsMatch(matchingRows);
+                            colsMatch = LogicMethods.CheckColsMatch(matchingCols);
+                            diagsMatch = LogicMethods.CheckDiagsMatch(matchingDiags);
+
+                            UIMethods.DisplayRowsWin(matchingRows);
+                            UIMethods.DisplayColumnsWin(matchingCols);
+                            UIMethods.DisplayDiagonalsWin(matchingDiags);
+                        }
+                    }
                 }
 
                 balance -= decreaseBalanceForGameRound;
