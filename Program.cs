@@ -122,8 +122,11 @@ namespace SlotMachine
                 balance -= decreaseBalanceForGameRound;
                 winnings = LogicMethods.GrantWins(jackpotMatch, bigMatch, singleRowMatch, rowsMatch, colsMatch, diagsMatch, matchingRows, matchingCols, matchingDiags);
                 balance += winnings;
-                winAmount = LogicMethods.WinTotal(winnings);
-                UIMethods.DisplayTotalWin(winAmount, winnings);
+
+                if (winnings > 0)
+                {
+                    UIMethods.DisplayTotalWin(winnings);
+                }
 
                 // checks if the game is over
                 if (balance <= 0)

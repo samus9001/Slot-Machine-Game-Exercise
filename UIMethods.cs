@@ -207,12 +207,9 @@ namespace SlotMachine
         /// sets the UI message to show the total amount won each round
         /// </summary>
         /// <param name="winnings"></param>
-        public static void DisplayTotalWin(bool winAmount, int winnings)
+        public static void DisplayTotalWin(int winnings)
         {
-            if (winAmount)
-            {
-                Console.WriteLine($"\n\nTOTAL WIN = ${winnings}");
-            }
+            Console.WriteLine($"\n\nTOTAL WIN = ${winnings}");
         }
 
         /// <summary>

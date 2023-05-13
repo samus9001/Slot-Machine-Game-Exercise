@@ -272,18 +272,5 @@ namespace SlotMachine
             }
             return winnings;
         }
-
-        /// <summary>
-        /// checks if the winnings has increased and updates a bool to store it
-        /// </summary>
-        /// <param name="winnings"></param>
-        public static bool WinTotal(int winnings)
-        {
-            if (winnings > 0)
-            {
-                return true;
-            }
-            return false;
-        }
     }
 }
