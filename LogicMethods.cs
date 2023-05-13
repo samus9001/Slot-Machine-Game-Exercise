@@ -8,42 +8,36 @@ namespace SlotMachine
         /// generates a 3x3 array with random values between 0-9
         /// </summary>
         /// <returns></returns>
-        public static int[,] GenerateSlotMachineAny()
+        public static int[,] GenerateSlotMachineArray(char userInput)
         {
             int[,] grid = new int[Program.ROWS, Program.COLS];
             var rnd = new Random();
             int randomNumber;
 
-            for (int row = 0; row < grid.GetLength(0); row++)
+            if (userInput == '1')
             {
-                for (int col = 0; col < grid.GetLength(1); col++)
+                for (int row = 0; row < grid.GetLength(0); row++)
                 {
-                    randomNumber = rnd.Next(Program.MAX_NUMBER);
-                    grid[row, col] = randomNumber;
+                    for (int col = 0; col < grid.GetLength(1); col++)
+                    {
+                        if (row == 0 || row == 2)
+                        {
+                            grid[row, col] = 0;
+                        }
+                        else if (row == 1)
+                        {
+                            randomNumber = rnd.Next(Program.MAX_NUMBER);
+                            grid[row, col] = randomNumber;
+                        }
+                    }
                 }
             }
-            return grid;
-        }
 
-        /// <summary>
-        /// sets the values of the first and third row of the grid to 0
-        /// </summary>
-        /// <param name="grid"></param>
-        /// <returns></returns>
-        public static int[,] GenerateSlotMachineSingleRow(int[,] grid)
-        {
-            var rnd = new Random();
-            int randomNumber;
-
-            for (int row = 0; row < grid.GetLength(0); row++)
+            if (userInput == '3')
             {
-                for (int col = 0; col < grid.GetLength(1); col++)
+                for (int row = 0; row < grid.GetLength(0); row++)
                 {
-                    if (row == 0 || row == 2)
-                    {
-                        grid[row, col] = 0;
-                    }
-                    else if (row == 1)
+                    for (int col = 0; col < grid.GetLength(1); col++)
                     {
                         randomNumber = rnd.Next(Program.MAX_NUMBER);
                         grid[row, col] = randomNumber;
@@ -151,15 +145,14 @@ namespace SlotMachine
         /// <summary>
         /// checks for a jackpot match
         /// </summary>
-        /// <param name="userInput"></param>
         /// <param name="matchingRows"></param>
         /// <param name="matchingCols"></param>
         /// <returns></returns>
-        public static bool CheckJackpotMatch(char userInput, List<int> matchingRows, List<int> matchingCols)
+        public static bool CheckJackpotMatch(List<int> matchingRows, List<int> matchingCols)
         {
             bool jackpotMatch = false;
 
-            if (userInput == '3' && matchingRows.Count == Program.ROWS && matchingCols.Count == Program.COLS)
+            if (matchingRows.Count == Program.ROWS && matchingCols.Count == Program.COLS)
             {
                 jackpotMatch = true;
             }
@@ -169,16 +162,15 @@ namespace SlotMachine
         /// <summary>
         /// checks if there is a big match and updates a bool to store it
         /// </summary>
-        /// <param name="userInput"></param>
         /// <param name="jackpotMatch"></param>
         /// <param name="matchingRows"></param>
         /// <param name="matchingCols"></param>
         /// <returns></returns>
-        public static bool CheckBigMatch(char userInput, bool jackpotMatch, List<int> matchingRows, List<int> matchingCols)
+        public static bool CheckBigMatch(bool jackpotMatch, List<int> matchingRows, List<int> matchingCols)
         {
             bool bigMatch = false;
 
-            if (userInput == '3' && !jackpotMatch && (matchingRows.Count == Program.ROWS || matchingCols.Count == Program.COLS))
+            if (!jackpotMatch && (matchingRows.Count == Program.ROWS || matchingCols.Count == Program.COLS))
             {
                 bigMatch = true;
             }
@@ -190,14 +182,13 @@ namespace SlotMachine
         /// </summary>
         /// <param name="jackpotMatch"></param>
         /// <param name="bigMatch"></param>
-        /// <param name="userInput"></param>
         /// <param name="grid"></param>
         /// <returns></returns>
-        public static bool CheckSingleRowMatch(bool jackpotMatch, bool bigMatch, char userInput, int[,] grid)
+        public static bool CheckSingleRowMatch(bool jackpotMatch, bool bigMatch, int[,] grid)
         {
             bool singleRowMatch = false;
 
-            if (!jackpotMatch && !bigMatch && userInput == '1' && CheckSingleWinningRow(grid))
+            if (!jackpotMatch && !bigMatch && CheckSingleWinningRow(grid))
             {
                 singleRowMatch = true;
             }
@@ -209,14 +200,13 @@ namespace SlotMachine
         /// </summary>
         /// <param name="jackpotMatch"></param>
         /// <param name="bigMatch"></param>
-        /// <param name="userInput"></param>
         /// <param name="matchingRows"></param>
         /// <returns></returns>
-        public static bool CheckRowsMatch(bool jackpotMatch, bool bigMatch, char userInput, List<int> matchingRows)
+        public static bool CheckRowsMatch(bool jackpotMatch, bool bigMatch, List<int> matchingRows)
         {
             bool rowsMatch = false;
 
-            if (!jackpotMatch && !bigMatch && userInput == '3' && matchingRows.Count > 0)
+            if (!jackpotMatch && !bigMatch && matchingRows.Count > 0)
             {
                 rowsMatch = true;
             }
@@ -228,14 +218,13 @@ namespace SlotMachine
         /// </summary>
         /// <param name="jackpotMatch"></param>
         /// <param name="bigMatch"></param>
-        /// <param name="userInput"></param>
         /// <param name="matchingCols"></param>
         /// <returns></returns>
-        public static bool CheckColsMatch(bool jackpotMatch, bool bigMatch, char userInput, List<int> matchingCols)
+        public static bool CheckColsMatch(bool jackpotMatch, bool bigMatch, List<int> matchingCols)
         {
             bool colsMatch = false;
 
-            if (!jackpotMatch && !bigMatch && userInput == '3' && matchingCols.Count > 0)
+            if (!jackpotMatch && !bigMatch && matchingCols.Count > 0)
             {
                 colsMatch = true;
             }
@@ -247,14 +236,13 @@ namespace SlotMachine
         /// </summary>
         /// <param name="jackpotMatch"></param>
         /// <param name="bigMatch"></param>
-        /// <param name="userInput"></param>
         /// <param name="matchingDiags"></param>
         /// <returns></returns>
-        public static bool CheckDiagsMatch(bool jackpotMatch, bool bigMatch, char userInput, List<int> matchingDiags)
+        public static bool CheckDiagsMatch(bool jackpotMatch, bool bigMatch, List<int> matchingDiags)
         {
             bool diagsMatch = false;
 
-            if (!jackpotMatch && !bigMatch && userInput == '3' && matchingDiags.Count > 0)
+            if (!jackpotMatch && !bigMatch && matchingDiags.Count > 0)
             {
                 diagsMatch = true;
             }

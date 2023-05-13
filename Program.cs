@@ -71,21 +71,20 @@ namespace SlotMachine
                 }
 
                 int decreaseBalanceForGameRound = 1;
-                int[,] grid = LogicMethods.GenerateSlotMachineAny();
+                int[,] grid = LogicMethods.GenerateSlotMachineArray(userInput);
+
+                if (userInput == '1')
+                {
+                    UIMethods.DisplaySlotMachineArray(grid);
+
+                    LogicMethods.CheckSingleWinningRow(grid);
+                    singleRowMatch = LogicMethods.CheckSingleRowMatch(jackpotMatch, bigMatch, grid);
+                    UIMethods.DisplaySingleRowWin(jackpotMatch, bigMatch, singleRowMatch);
+                }
 
                 List<int> matchingRows = LogicMethods.CheckWinningRows(grid);
                 List<int> matchingCols = LogicMethods.CheckWinningCols(grid);
                 List<int> matchingDiags = LogicMethods.CheckWinningDiags(grid);
-
-                if (userInput == '1')
-                {
-                    LogicMethods.GenerateSlotMachineSingleRow(grid);
-                    UIMethods.DisplaySlotMachineArray(grid);
-
-                    LogicMethods.CheckSingleWinningRow(grid);
-                    singleRowMatch = LogicMethods.CheckSingleRowMatch(jackpotMatch, bigMatch, userInput, grid);
-                    UIMethods.DisplaySingleRowWin(jackpotMatch, bigMatch, singleRowMatch, SMALL_WIN);
-                }
 
                 if (userInput == '3')
                 {
@@ -93,14 +92,14 @@ namespace SlotMachine
 
                     UIMethods.DisplaySlotMachineArray(grid);
 
-                    jackpotMatch = LogicMethods.CheckJackpotMatch(userInput, matchingRows, matchingCols);
-                    bigMatch = LogicMethods.CheckBigMatch(userInput, jackpotMatch, matchingRows, matchingCols);
-                    rowsMatch = LogicMethods.CheckRowsMatch(jackpotMatch, bigMatch, userInput, matchingRows);
-                    colsMatch = LogicMethods.CheckColsMatch(jackpotMatch, bigMatch, userInput, matchingCols);
-                    diagsMatch = LogicMethods.CheckDiagsMatch(jackpotMatch, bigMatch, userInput, matchingDiags);
+                    jackpotMatch = LogicMethods.CheckJackpotMatch(matchingRows, matchingCols);
+                    bigMatch = LogicMethods.CheckBigMatch(jackpotMatch, matchingRows, matchingCols);
+                    rowsMatch = LogicMethods.CheckRowsMatch(jackpotMatch, bigMatch, matchingRows);
+                    colsMatch = LogicMethods.CheckColsMatch(jackpotMatch, bigMatch, matchingCols);
+                    diagsMatch = LogicMethods.CheckDiagsMatch(jackpotMatch, bigMatch, matchingDiags);
 
-                    UIMethods.DisplayJackpotWin(jackpotMatch, LARGE_WIN);
-                    UIMethods.DisplayBigWin(jackpotMatch, bigMatch, LARGE_WIN);
+                    UIMethods.DisplayJackpotWin(jackpotMatch);
+                    UIMethods.DisplayBigWin(jackpotMatch, bigMatch);
                     UIMethods.DisplayRowsWin(matchingRows, jackpotMatch, bigMatch);
                     UIMethods.DisplayColumnsWin(matchingCols, jackpotMatch, bigMatch);
                     UIMethods.DisplayDiagonalsWin(matchingDiags, jackpotMatch, bigMatch);
