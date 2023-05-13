@@ -111,12 +111,11 @@ namespace SlotMachine
         /// sets the UI message when there is a jackpot match
         /// </summary>
         /// <param name="jackpot"></param>
-        /// <param name="LARGE_WIN"></param>
-        public static void DisplayJackpotWin(bool jackpot, int LARGE_WIN)
+        public static void DisplayJackpotWin(bool jackpot)
         {
             if (jackpot)
             {
-                Console.WriteLine($"\nJACKPOT!!! YOU WIN ${LARGE_WIN}!\n");
+                Console.WriteLine($"\nJACKPOT!!! YOU WIN ${Program.LARGE_WIN}!\n");
             }
         }
 
@@ -125,12 +124,11 @@ namespace SlotMachine
         /// </summary>
         /// <param name="jackpotMatch"></param>
         /// <param name="bigWin"></param>
-        /// <param name="MEDIUM_WIN"></param>
-        public static void DisplayBigWin(bool jackpotMatch, bool bigWin, int MEDIUM_WIN)
+        public static void DisplayBigWin(bool jackpotMatch, bool bigWin)
         {
             if (!jackpotMatch && bigWin)
             {
-                Console.WriteLine($"\nYOU HIT A BIG WIN!! YOU WIN ${MEDIUM_WIN}!\n");
+                Console.WriteLine($"\nYOU HIT A BIG WIN!! YOU WIN ${Program.MEDIUM_WIN}!\n");
             }
         }
 
@@ -140,12 +138,11 @@ namespace SlotMachine
         /// <param name="jackpotMatch"></param>
         /// <param name="bigMatch"></param>
         /// <param name="singleRowMatch"></param>
-        /// <param name="SMALL_WIN"></param>
-        public static void DisplaySingleRowWin(bool jackpotMatch, bool bigMatch, bool singleRowMatch, int SMALL_WIN)
+        public static void DisplaySingleRowWin(bool jackpotMatch, bool bigMatch, bool singleRowMatch)
         {
             if (!jackpotMatch && !bigMatch && singleRowMatch)
             {
-                Console.WriteLine($"\nYOU HIT A MATCH! YOU WIN ${SMALL_WIN}!\n");
+                Console.WriteLine($"\nYOU HIT A MATCH! YOU WIN ${Program.SMALL_WIN}!\n");
             }
         }
 
