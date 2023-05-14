@@ -14,33 +14,19 @@ namespace SlotMachine
             var rnd = new Random();
             int randomNumber;
 
-            if (userInput == '1')
+            for (int row = 0; row < grid.GetLength(0); row++)
             {
-                for (int row = 0; row < grid.GetLength(0); row++)
+                for (int col = 0; col < grid.GetLength(1); col++)
                 {
-                    for (int col = 0; col < grid.GetLength(1); col++)
+                    randomNumber = rnd.Next(Program.MAX_NUMBER);
+                    grid[row, col] = randomNumber;
+
+                    if (userInput == '1')
                     {
-                        if (row == 0 || row == 2)
+                        if (row != 1)
                         {
                             grid[row, col] = 0;
                         }
-                        else if (row == 1)
-                        {
-                            randomNumber = rnd.Next(Program.MAX_NUMBER);
-                            grid[row, col] = randomNumber;
-                        }
-                    }
-                }
-            }
-
-            if (userInput == '3')
-            {
-                for (int row = 0; row < grid.GetLength(0); row++)
-                {
-                    for (int col = 0; col < grid.GetLength(1); col++)
-                    {
-                        randomNumber = rnd.Next(Program.MAX_NUMBER);
-                        grid[row, col] = randomNumber;
                     }
                 }
             }
