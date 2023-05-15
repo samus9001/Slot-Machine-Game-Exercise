@@ -21,12 +21,9 @@ namespace SlotMachine
                     randomNumber = rnd.Next(Program.MAX_NUMBER);
                     grid[row, col] = randomNumber;
 
-                    if (userInput == '1')
+                    if (userInput == '1' && row != 1)
                     {
-                        if (row != 1)
-                        {
-                            grid[row, col] = 0;
-                        }
+                        grid[row, col] = 0;
                     }
                 }
             }

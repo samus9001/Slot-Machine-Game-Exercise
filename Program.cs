@@ -72,11 +72,10 @@ namespace SlotMachine
 
                 int decreaseBalanceForGameRound = 1;
                 int[,] grid = LogicMethods.GenerateSlotMachineArray(userInput);
+                UIMethods.DisplaySlotMachineArray(grid);
 
                 if (userInput == '1')
                 {
-                    UIMethods.DisplaySlotMachineArray(grid);
-
                     LogicMethods.CheckSingleWinningRow(grid);
                     singleRowMatch = LogicMethods.CheckSingleRowMatch(grid);
                     UIMethods.DisplaySingleRowWin(singleRowMatch);
@@ -89,8 +88,6 @@ namespace SlotMachine
                 if (userInput == '3')
                 {
                     decreaseBalanceForGameRound = MAX_LOSS;
-
-                    UIMethods.DisplaySlotMachineArray(grid);
 
                     jackpotMatch = LogicMethods.CheckJackpotMatch(matchingRows, matchingCols); // determines if a jackpot is hit
 
